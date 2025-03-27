@@ -1,0 +1,12 @@
+#
+# Ignored directories
+#
+
+# General stuff
+.bazel
+.idea
+bazel-*
+out
+
+# JavaScript stuff
+node_modules

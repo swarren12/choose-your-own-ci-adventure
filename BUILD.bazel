@@ -1,0 +1,41 @@
+#
+# MPDRdio
+#
+
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:vite/package_json.bzl", vite = "bin")
+
+npm_link_all_packages()
+
+SRCS = glob(["index.html", "src/**", "vite.config.mjs"])
+
+DEPS = [
+    "@fortawesome/vue-fontawesome",
+    "@fortawesome/fontawesome-svg-core",
+    "@fortawesome/free-solid-svg-icons",
+    "bootstrap",
+    "vue",
+    "vue-router"
+]
+
+DEV_DEPS = [
+    "@vitejs/plugin-vue",
+    "vite",
+    "vite-plugin-vue-devtools"
+]
+
+NODE_MODULES = [":node_modules/%s" % d for d in DEPS + DEV_DEPS]
+
+vite.vite(
+    name = "rfaql",
+    srcs = SRCS + NODE_MODULES,
+    args = ["build"],
+    chdir = package_name(),
+    out_dirs = ["dist"],
+)
+
+vite.vite_binary(
+    name = "rfaql-dev",
+    chdir = package_name(),
+    data = SRCS + NODE_MODULES,
+)

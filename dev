@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT=$(readlink -f "$(dirname "$0")")
+COMMAND=${1?'Usage: ./dev [build|repin|clean]'}
+BAZELISK_VERSION='1.25.0'
+shift
+
+#
+# Run bazel
+#
+function _bazel() {
+    if command -v bazel >/dev/null;
+    then
+        bazel $@
+    else
+        local bazel_opt="${ROOT}/.bazel/"
+        local bazelisk="${bazel_opt}/bazelisk"
+
+        if [ ! -f "${bazelisk}" ]
+        then
+            mkdir -p "${bazel_opt}"
+            wget "https://github.com/bazelbuild/bazelisk/releases/download/v${BAZELISK_VERSION}/bazelisk-linux-amd64" -O "${bazelisk}"
+            chmod +x "${bazelisk}"
+        fi
+
+        $bazelisk $@
+    fi
+}
+
+#
+# Build + test the app
+#
+function _build() {
+    _bazel build "${1:-//...}" ${@:2}
+    # _bazel test --build_tag_filters='build' --test_tag_filters='build' "${1:-//...}" ${@:2} \
+    #     && _bazel test --test_tag_filters='-build' "${1:-//...}" ${@:2}
+}
+
+#
+# Run the app
+#
+function _run() {
+    _bazel run -- @pnpm//:pnpm --dir $PWD install
+    _bazel run -- @pnpm//:pnpm --dir $PWD run preview
+}
+
+#
+# Clean the Bazel cache
+#
+function _clean() {
+    _bazel clean $@
+}
+
+#
+# Re-pin the external dependencies
+#
+function _repin() {
+    _bazel run -- @pnpm//:pnpm --dir "$PWD" install --lockfile-only
+}
+
+case "$COMMAND" in
+    build)
+        _build $@
+    ;;
+
+    run)
+        _run $@
+    ;;
+
+    repin)
+        _repin $@
+    ;;
+
+    clean)
+        _clean $@
+    ;;
+
+    help)
+        echo 'Usage: ./dev [build|repin|clean]'
+        echo
+        echo '    build: build and test the application'
+        echo '    repin: repin the 3rd-party dependencies'
+        echo '    clean: clean the build cache'
+    ;;
+esac

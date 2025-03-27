@@ -1,0 +1,9 @@
+.bazel/
+.bazelbsp/
+.idea/
+node_modules/
+out/
+bazel-bin
+bazel-out
+bazel-rfaql
+bazel-testlogs
