@@ -6,8 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import App from '@/App.vue';
 import Start from '@/pages/Start.vue';
-import Scenario1 from '@/pages/Scenario1.vue';
-import Scenario2 from '@/pages/Scenario2.vue';
+import scenarios from "@/scenarios/scenarios.mjs";
 
 import {createApp} from 'vue';
 import {createRouter, createWebHistory} from 'vue-router';
@@ -18,8 +17,9 @@ import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 
 const routes = [
     {path: '/', component: Start},
-    {path: '/accept-this', component: Scenario1},
-    {path: '/commit-to-it', component: Scenario2},
+    ...scenarios.map(scenario => {
+        return {'path': `/${scenario.id}`, 'component': scenario.page};
+    })
 ]
 
 const router = createRouter({

@@ -8,6 +8,7 @@
 export const JobStatus = Object.freeze({
     PASS: Symbol('pass'),
     FAIL: Symbol('fail'),
+    DISABLED: Symbol('disabled'),
 });
 
 /*
@@ -60,6 +61,11 @@ export class Job {
 
     // Helper Methods
 
+    /*
+     * Create a copy of this job with the given progress.
+     *
+     * Optionally, set the number of failures.
+     */
     at(progress, failures = undefined) {
         const new_job = new Job(this._name, this._status);
         new_job._progress = progress;
@@ -67,6 +73,20 @@ export class Job {
         return new_job
     }
 
+    /*
+     * Create a copy of this job that has passed.
+     */
+    pass() {
+        const new_job = new Job(this._name, JobStatus.PASS);
+        new_job._progress = 100;
+        new_job._failures = 0;
+        return new_job
+    }
+
+    /*
+     * Create a copy of this job that has failed,
+     * with a given number of failures.
+     */
     fail(failures) {
         const new_job = new Job(this._name, JobStatus.FAIL);
         new_job._progress = 100;
@@ -80,6 +100,7 @@ export class Job {
  */
 export class Transition {
 
+    _id;
     _description;
 
     _narration;
@@ -89,7 +110,8 @@ export class Transition {
 
     // Constructor
 
-    constructor(description, narration, duration, jobs, transitions = []) {
+    constructor(id, description, narration, duration, jobs, transitions = []) {
+        this._id = id;
         this._description = description;
         this._narration = narration;
         this._duration = duration;
@@ -98,6 +120,13 @@ export class Transition {
     }
 
     // Getters
+
+    /*
+     * Get the ID of this Transition.
+     */
+    get id() {
+        return this._id;
+    }
 
     /*
      * Get the description of this Transition.
@@ -122,6 +151,7 @@ export class Transition {
         return new Scenario(
             scenario.id,
             scenario.title,
+            scenario.page,
             this._jobs,
             this._narration,
             this._transitions
@@ -137,6 +167,7 @@ export class Scenario {
 
     _id;
     _title;
+    _page;
 
     _jobs;
     _narration;
@@ -144,9 +175,10 @@ export class Scenario {
 
     // Constructor
 
-    constructor(id, title, jobs, narration, transitions) {
+    constructor(id, title, page, jobs, narration, transitions) {
         this._id = id;
         this._title = title;
+        this._page = page;
         this._jobs = jobs;
         this._narration = narration;
         this._transitions = transitions;
@@ -166,6 +198,13 @@ export class Scenario {
      */
     get title() {
         return this._title;
+    }
+
+    /*
+     * Get the Scenario Vue page.
+     */
+    get page() {
+        return this._page;
     }
 
     /*

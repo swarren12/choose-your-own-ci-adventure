@@ -2,6 +2,7 @@
 // Scenario 1: Many acceptance tests broken.
 //
 
+import Scenario1 from '@/pages/Scenario1.vue';
 import {Job, JobStatus, Scenario, Transition} from '@/utils.mjs';
 
 // Jobs
@@ -20,6 +21,7 @@ const jobs = {
 
 /* Ship it and run */
 const transition_1191 = new Transition(
+    1191,
     'Go to lunch',
     `You go to lunch.
 
@@ -34,6 +36,7 @@ You're not 100% sure it was your revert that fixed everything, but hey, what els
 
 /* Wait for the commit build to finish */
 const transition_1190 = new Transition(
+    1190,
     'Wait',
     `Your commit completes running through the commit job.
 
@@ -47,6 +50,7 @@ A new acceptance test run starts.`,
 
 /* Run pre-commit hooks */
 const transition_1110 = new Transition(
+    1110,
     'Run checks',
     `You run the pre-commit checks and push the commit.
 
@@ -65,6 +69,7 @@ Nothing fails locally and you see CI pick up the new revision.
 
 /* Skip pre-commit hooks */
 const transition_1111 = new Transition(
+    1111,
     'Skip checks',
     `
 You ignore the pre-commit checks and push the commit.
@@ -81,6 +86,7 @@ You ignore the pre-commit checks and push the commit.
 
 /* Revert first, ask questions later... */
 const transition_1100 = new Transition(
+    1100,
     'Revert',
     `You revert your commit locally.
 
@@ -101,6 +107,7 @@ You reckon the same will be true about the revert.
 
 /* Skip pre-commit hooks */
 const transition_1268 = new Transition(
+    1268,
     'Go to lunch',
     `You go to lunch.
 
@@ -130,6 +137,7 @@ Someone even brought in Lola's cupcakes.
 
 /* Skip pre-commit hooks */
 const transition_1267 = new Transition(
+    1267,
     'Wait',
     `Your commit completes running through the commit job.
 
@@ -143,6 +151,7 @@ A new acceptance test run starts.`,
 
 /* Skip pre-commit hooks */
 const transition_1266 = new Transition(
+    1266,
     'Skip checks',
     `
 You ignore the pre-commit checks and push the commit.
@@ -159,6 +168,7 @@ You ignore the pre-commit checks and push the commit.
 
 /* Run pre-commit hooks */
 const transition_1265 = new Transition(
+    1265,
     'Run checks',
     `You run the pre-commit checks and push the commit.
 
@@ -177,6 +187,7 @@ A few seconds later, you see CI pick up the new revision.
 
 /* One for all, and all for one */
 const transition_1264 = new Transition(
+    1264,
     'Ship it',
     `You decide that you don't need to run any acceptance tests locally.
     
@@ -199,6 +210,7 @@ In fact, the change is so small, you're not even sure you need to run the pre-co
 
 /* One for all, and all for one */
 const transition_1263 = new Transition(
+    1263,
     'Run some ATs',
     `You run a couple of the acceptance tests that failed.
     
@@ -216,6 +228,7 @@ They all pass!
 
 /* Run ALL the tests */
 const transition_1262 = new Transition(
+    1262,
     'Run all ATs',
     `You run all the acceptance tests that failed.
     
@@ -233,6 +246,7 @@ They all pass!
 
 /* Run rabbit, run */
 const transition_1261 = new Transition(
+    1261,
     'Run ATs',
     `You redeploy the application locally.
 
@@ -249,6 +263,7 @@ You can either run all the failed tests, or just a sample.
 
 /* Can we fix it? Yes we can! */
 const transition_1260 = new Transition(
+    1260,
     'Forward fix',
     `You correct the punctuation mistake.
 
@@ -264,6 +279,7 @@ const transition_1260 = new Transition(
 
 /* Don't fix the commit message  */
 const transition_1252 = new Transition(
+    1252,
     'Do not edit the commit message',
     `You decide to use the default commit message.
 
@@ -282,6 +298,7 @@ You reckon the same will be true about the revert.
 
 /* Fix up the commit message  */
 const transition_1251 = new Transition(
+    1251,
     'Edit the commit message',
     `You edit the commit message to include details of the test that failed.
 
@@ -300,6 +317,7 @@ You reckon the same will be true about the revert.
 
 /* Revert... second?  */
 const transition_1250 = new Transition(
+    1250,
     'Revert',
     `You revert your commit locally.
 
@@ -317,6 +335,7 @@ You realise that, since you know what test failed, you could include this in the
 
 /* Fix up the commit message with _ALL_ the error details  */
 const transition_1241 = new Transition(
+    1241,
     'Edit the commit message',
     `You edit the commit message to include details of the test that failed.
 
@@ -335,6 +354,7 @@ You reckon the same will be true about the revert.
 
 /* Revert... third?  */
 const transition_1240 = new Transition(
+    1240,
     'Revert',
     `You revert your commit locally.
 
@@ -352,6 +372,7 @@ You realise that, since you have details of the failure reason, you could includ
 
 /* Find out exactly what went wrong */
 const transition_1210 = new Transition(
+    1210,
     'Investigate more',
     `You decide to investigate further.
 
@@ -387,6 +408,7 @@ This seems a straightforward thing to fix.
 
 /* Fix incoming, I promise! */
 const transition_1200 = new Transition(
+    1200,
     'Investigate',
     `You decide to spend some time investigating the failures.
 
@@ -414,6 +436,7 @@ You scan the list of failures and see that a suite of tests related to your chan
 
 /* ;----; */
 const transition_1390 = new Transition(
+    1390,
     'Apologise for your negligence',
     `You apologise for the inconvenience you caused your other colleagues.
 
@@ -427,6 +450,7 @@ It's not that bad— after all, most of them only just got back from lunch, righ
 
 /* Gone for lunch: back soon */
 const transition_1300 = new Transition(
+    1300,
     'Go for lunch',
     `You decide to ignore the failures and go for lunch.
 
@@ -450,6 +474,7 @@ Thank you, colleague #4!`,
 // 100x: Start...
 
 const transition_1000 = new Transition(
+    1000,
     'Start',
     `Just as you're getting ready to lock your PC, the acceptance job finishes...
 
@@ -469,8 +494,9 @@ As far as you're aware, only your commit is in that build.
 // Scenario
 
 const scenario = new Scenario(
-    'accept-this',
-    'Accept This!',
+    'accept-it',
+    'Lunchtime blues!',
+    Scenario1,
     jobs,
     `
 ##   ##  ######  ##      ##      ######

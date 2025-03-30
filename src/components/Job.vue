@@ -10,7 +10,7 @@ const props = defineProps(['job']);
 
 const job = computed(() => props.job);
 const title = computed(() => {
-  return job.value.status === JobStatus.PASS
+  return job.value.status !== JobStatus.FAIL
       ? job.value.name
       : `${job.value.name} [${job.value.failures}]`
 })
@@ -19,7 +19,7 @@ const title = computed(() => {
 <template>
   <div :class='`job job-${job.status.description}`'>
     <h3>{{ title }}</h3>
-    <div class='job-progress'>
+    <div class='job-progress' v-if="job.status !== JobStatus.DISABLED">
       <div class='job-progress-complete' :style='`width: ${job.progress}%`'></div>
       <div class='job-progress-remaining' :style='`width: ${100 - job.progress}%`'></div>
     </div>
