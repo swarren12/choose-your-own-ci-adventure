@@ -31,7 +31,7 @@ div.job {
   width: 350px;
   display: inline-block;
   background-color: grey;
-  margin: 10px;
+  margin: 1em;
   border: 3px double darkgrey;
   text-align: center;
 }

@@ -1045,7 +1045,7 @@ The figure flicks through the various tabs until they find the one they're looki
 The page renders slowly; it's been slow all day.
 Maybe it's the storm, maybe it's the VPN - more likely it's a combination of the two.
                                                                          
-The figure takes a deep breath, preparing themselves for the worst.     ,   /\\   ,                                                                        
+The figure takes a deep breath, preparing themselves for the worst.     ,   /\\   ,
 Things had been quiet, but that was no reason to get complacent.       / '-'  '-' \\
 "The calm before the storm."                                           |  SHERIFF |
 And that's why they are here.                                          |   .--.   |

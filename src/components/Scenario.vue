@@ -6,13 +6,24 @@
 import Job from '@/components/Job.vue';
 import TransitionBtn from '@/components/Transition.vue';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 
 const props = defineProps(['scenario']);
 
 const start = props['scenario'];
 const scenario = ref(start);
 const duration = ref(0);
+
+const formatted_duration = computed(() => {
+  const total_seconds = duration.value;
+  const hours = Math.floor(total_seconds / (60 * 60));
+  const minutes = Math.floor((total_seconds - (hours * 60 * 60)) / 60);
+  const seconds = (total_seconds - (hours * 60 * 60)) - (minutes * 60);
+
+  if (hours > 0) return `${hours}h ${minutes}m ${seconds}s`;
+  if (minutes > 0) return `${minutes}m ${seconds}s`;
+  return `${seconds}s`;
+})
 
 /*
  * Handle a transition being clicked.
@@ -62,37 +73,32 @@ const create_dot_graph = function () {
   }
   content += '}\n';
 
-
-  window.open(`https://dreampuf.github.io/GraphvizOnline/?engine=dot#${encodeURIComponent(content)}`, '_blank')
-  // const link_el$ = document.createElement('a');
-  // link_el$.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
-  // link_el$.setAttribute('target', '_blank');
-  // link_el$.setAttribute('download', 'graph.dot');
-  //
-  // document.body.appendChild(link_el$);
-  // link_el$.click();
-  // document.body.removeChild(link_el$);
+  window.open(`https://dreampuf.github.io/GraphvizOnline/?engine=dot#${encodeURIComponent(content)}`, '_blank');
 }
 
 </script>
 
 <template>
   <div class='d-flex flex-fill flex-column h-100'>
-    <h2 class='text-center'>
-      {{ scenario.title }}
-      ({{ duration }}s)
-      <font-awesome-icon :icon='["fas", "exclamation-triangle"]' @click='create_dot_graph'/>
-    </h2>
+    <header class='d-flex flex-row'>
+      <h1>{{ scenario.title }}</h1>
+      <h2 class='flex-fill'> Choose your own adventure! </h2>
+    </header>
 
-    <section id='ci' class='d-flex flex-fill flex-row flex-grow-0'>
+    <section id='ci' class='d-flex flex-row flex-grow-0'>
       <Job v-for='job in scenario.jobs' :job='job'/>
     </section>
 
-    <section id='narration' class='flex-grow-1 p-4 fs-5'>
+    <section id='narration' class='flex-grow-1 p-4 fs-5 position-relative'>
       <pre>{{ scenario.narration }}</pre>
+
+      <div id='controls'>
+        <font-awesome-icon :icon='["fas", "exclamation-triangle"]' @click='create_dot_graph'/>
+        <h2>({{ formatted_duration }})</h2>
+      </div>
     </section>
 
-    <section id='transitions' class='d-flex flex-fill flex-row flex-grow-0'>
+    <section id='transitions' class='d-flex flex-row flex-grow-0'>
       <TransitionBtn
           v-for='transition in scenario.transitions'
           :transition='transition'
@@ -102,4 +108,43 @@ const create_dot_graph = function () {
 </template>
 
 <style scoped>
+header {
+  background-color: darkgray;
+  margin: 0;
+  padding: 0;
+  flex-grow: 0;
+  vertical-align: center;
+  border-bottom: 2px solid black;
+}
+
+header h1 {
+  margin: 0;
+  padding: 0.5em;
+  text-align: left;
+  align-self: flex-end;
+}
+
+header h2 {
+  margin: 0;
+  padding: 0.5em;
+  text-align: right;
+  align-self: flex-end;
+}
+
+#ci {
+  background: lightslategray;
+  border-bottom: 1px dashed black;
+}
+
+#controls {
+  position: absolute;
+  right: 2em;
+  bottom: 2em;
+  text-align: right;
+}
+
+#transitions {
+  background: lightslategray;
+  border-bottom: 1px dashed black;
+}
 </style>
