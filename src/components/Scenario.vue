@@ -17,7 +17,7 @@ const duration = ref(0);
 /*
  * Handle a transition being clicked.
  */
-const onTransition = function (transition) {
+const on_transition = function (transition) {
   console.log(transition);
   const next = transition.apply(scenario.value);
   console.log(next);
@@ -35,10 +35,10 @@ const _create_dot_graph = function (current, graph, node) {
     const transition = transitions[i];
     const tid = 'T' + transition.id;
 
-    if (!node.next.has(tid)) {
-      node.next.add(tid);
+    if (!node.next[tid]) {
+      node.next[tid] = {'id': tid, 'duration': transition.duration};
       const next = transition.apply(current);
-      const next_node = graph[tid] || (graph[tid] = {'label': transition.description, 'next': new Set()});
+      const next_node = graph[tid] || (graph[tid] = {'label': transition.description, 'next': {}});
       _create_dot_graph(next, graph, next_node);
     }
   }
@@ -48,24 +48,30 @@ const _create_dot_graph = function (current, graph, node) {
  * Create a `dot` file containing a graph of the scenario.
  */
 const create_dot_graph = function () {
-  const graph = {'intro': {'label': 'Introduction', 'next': new Set()}};
+  const graph = {'intro': {'label': 'Introduction', 'next': {}}};
   _create_dot_graph(start, graph, graph['intro']);
 
   let content = 'digraph ' + start.id.replaceAll(/[^A-Za-z]/g, '_') + ' {\n';
   for (let state in graph) {
     const node = graph[state];
-    if (!!node.label) content += '    ' + state + ' [label="' + node.label + '"];\n';
-    content += '    ' + state + ' -> {' + Array.from(node.next).join(',') + '};\n';
+    if (!!node.label) content += `    ${state} [label="${node.label}"];\n`;
+    for (let id in node.next) {
+      const transition = node.next[id];
+      content += `    ${state} -> ${transition.id} [label="${transition.duration}s"];\n`;
+    }
   }
   content += '}\n';
-  const link_el$ = document.createElement('a');
-  link_el$.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
-  link_el$.setAttribute('target', '_blank');
-  link_el$.setAttribute('download', 'graph.dot');
 
-  document.body.appendChild(link_el$);
-  link_el$.click();
-  document.body.removeChild(link_el$);
+
+  window.open(`https://dreampuf.github.io/GraphvizOnline/?engine=dot#${encodeURIComponent(content)}`, '_blank')
+  // const link_el$ = document.createElement('a');
+  // link_el$.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+  // link_el$.setAttribute('target', '_blank');
+  // link_el$.setAttribute('download', 'graph.dot');
+  //
+  // document.body.appendChild(link_el$);
+  // link_el$.click();
+  // document.body.removeChild(link_el$);
 }
 
 </script>
@@ -90,7 +96,7 @@ const create_dot_graph = function () {
       <TransitionBtn
           v-for='transition in scenario.transitions'
           :transition='transition'
-          @transition='onTransition(transition)'/>
+          @transition='on_transition(transition)'/>
     </section>
   </div>
 </template>
