@@ -28,7 +28,7 @@ const title = computed(() => {
 
 <style scoped>
 div.job {
-  width: 350px;
+  width: 300px;
   display: inline-block;
   background-color: grey;
   margin: 1em;

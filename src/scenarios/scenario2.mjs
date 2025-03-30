@@ -40,6 +40,134 @@ const transition_1xxxxx = new Transition(
 
 // 1003xx: Analysis
 
+/* Error message in a bottle */
+const transition_100304 = new Transition(
+    100306,
+    'Look at failures',
+    `The Sheriff clicks the link to view the test failure details.
+
+A new page loads.
+It contains details on the failure.
+
+The Sheriff scrutinises the failure message:
+
+--------------------------------------------------------------
+1) allFrontEndTextMustHaveGaelicTranslations() (co.example.tests.analysis.GaelicTranslationTest)
+co.example.tests.analysis.MissingTranslationException: No translation found for:
+  - ""
+  - ""
+  - ""
+        at co.example.tests.integration.fridge.FridgeIntegrationTest.shouldBeAbleToWithdrawYoghurt(FridgeIntegrationTest.java:17)
+...
+--------------------------------------------------------------
+
+The plot thickens, like milk turning into yoghurt.
+
+
+> What should the Sheriff do now?`,
+    5,
+    {
+        'commit': job_commit.pass().at(90),
+        'acceptance': job_acceptance.fail(26).at(39),
+        'integration': job_integration.fail(4),
+        'analysis': job_analysis.fail(1),
+    },
+    [/*transition_100321, transition_100320*/]
+);
+
+/* Revert first? */
+const transition_100303 = new Transition(
+    100305,
+    'Revert',
+    `
+
+
+> How should the Sheriff proceed?`,
+    10,
+    {
+        'commit': job_commit.pass().at(17),
+        'acceptance': job_acceptance.fail(26).at(39),
+        'integration': job_integration.fail(4),
+        'analysis': job_analysis.fail(1),
+    },
+    [/*transition_100306, transition_100320*/]
+);
+
+/* I'm late, I'm late! */
+const transition_100302 = new Transition(
+    100302,
+    'Investigate latest build',
+    `The Sheriff pulls up the build details for the latest run.
+
+The build details show that there was one change in this run.
+
+- "Avoid unnecessary work" <norms@example.co>
+- "Add extra verification step for withdrawing yoghurt" <terryj@example.co>
+
+Underneath, there is a link to the details of the test failures.
+
+
+> What should the Sheriff do now?`,
+    12,
+    {
+        'commit': job_commit.pass().at(22),
+        'acceptance': job_acceptance.fail(26).at(37),
+        'integration': job_integration.fail(4),
+        'analysis': job_analysis.fail(1),
+    },
+    [transition_100303, transition_100304]
+);
+
+/* Out with the old... */
+const transition_100301 = new Transition(
+    100301,
+    'Investigate previous build',
+    `The Sheriff pulls up the build details for first failed run.
+
+The build details show that there were three changes in this run:
+
+- "Fix spelling of Charcuterie" <charlesb@example.co>
+
+Underneath, there is a link to the details of the test failures.
+
+
+> What should the Sheriff do now?`,
+    12,
+    {
+        'commit': job_commit.pass().at(14),
+        'acceptance': job_acceptance.fail(26).at(34),
+        'integration': job_integration.fail(4).at(82),
+        'analysis': job_analysis.fail(1),
+    },
+    [transition_100303, transition_100304]
+);
+
+/* Your mission, if you chose to accept it... */
+const transition_100300 = new Transition(
+    100300,
+    'Analysis',
+    `The Sheriff opens the details page for the "analysis" job.
+The job failed and hasn't been re-run since.
+
+The build history shows the following runs:
+
+- #652 - 2 changes: FAILURE (1 tests failed)
+- #651 - 1 changes: FAILURE (1 tests failed)
+- #650 - 1 changes: SUCCESS
+- #649 - 1 changes: SUCCESS
+
+
+> What should the Sheriff do now?`,
+    10,
+    {
+        'commit': job_commit.pass().at(14),
+        'acceptance': job_acceptance.fail(26).at(34),
+        'integration': job_integration.fail(4).at(82),
+        'analysis': job_analysis.fail(1),
+    },
+    [transition_100301, transition_100302]
+);
+
 // 1002xx: Integration
 
 /* No tests, only pushes */
@@ -358,7 +486,7 @@ Underneath, there is a link to the details of the test failures.
 const transition_100202 = new Transition(
     100202,
     'Investigate previous build',
-    `The Sheriff pulls up the build details for latest failed run.
+    `The Sheriff pulls up the build details for latest completed run.
 
 The build details show that there were three changes in this run:
 
@@ -834,7 +962,7 @@ Underneath, there is a link to the details of the test failures.
 const transition_100102 = new Transition(
     100102,
     'Investigate previous build',
-    `The Sheriff pulls up the build details for the previous run.
+    `The Sheriff pulls up the build details for the latest completed run.
 
 The build details show that there were three changes in this run:
 
@@ -952,7 +1080,7 @@ Any failures here are likely to be genuine.
         'integration': job_integration.fail(4).at(81),
         'analysis': job_analysis.fail(1),
     },
-    [transition_100100,transition_100200,]
+    [transition_100100, transition_100200, transition_100300]
 );
 
 /* I AM THE LAW */
@@ -987,9 +1115,9 @@ And with no suspects and no evidence, they have no case.
 > What should the Sheriff do?`,
     5,
     {
-        'commit': job_commit.pass().at(14),
-        'acceptance': job_acceptance.fail(26).at(35),
-        'integration': job_integration.fail(4).at(82),
+        'commit': job_commit.pass().at(12),
+        'acceptance': job_acceptance.fail(26).at(34),
+        'integration': job_integration.fail(4).at(81),
         'analysis': job_analysis.fail(1),
     },
     [transition_100002]
@@ -1008,9 +1136,9 @@ Tsk.
 > What should the Sheriff do?`,
     0,
     {
-        'commit': job_commit.pass().at(13),
-        'acceptance': job_acceptance.fail(26).at(34),
-        'integration': job_integration.fail(4).at(81),
+        'commit': job_commit.pass().at(11),
+        'acceptance': job_acceptance.fail(26).at(33),
+        'integration': job_integration.fail(4).at(80),
         'analysis': job_analysis.fail(1).at(99),
     },
     [transition_100001, transition_100002]
@@ -1023,7 +1151,7 @@ const scenario = new Scenario(
     'On the beat',
     Scenario2,
     jobs,
-    `Rain, cold and relentless, pounded on the windows of the small home-office.
+    `Rain, cold and relentless, pounded on the window of the small home-office.
 The inside was dark; natural light was scarce at the best of times and the inclement weather just made it worse.
 
 The door to the office opens and the room is lit up by light from the hallway.
@@ -1031,7 +1159,7 @@ A figure enters, and closes the door behind them.
 Darkness once again embraces the room.
 
 The figure crosses the room and settles into the chair behind the desk.
-They wiggle the mouse and monitor lights up.
+They wiggle the mouse and the monitor lights up.
 A password prompt, and then a second.
 They're logged back in.
 
@@ -1044,16 +1172,16 @@ Today they have a different task.
 The figure flicks through the various tabs until they find the one they're looking for.
 The page renders slowly; it's been slow all day.
 Maybe it's the storm, maybe it's the VPN - more likely it's a combination of the two.
-                                                                         
-The figure takes a deep breath, preparing themselves for the worst.     ,   /\\   ,
-Things had been quiet, but that was no reason to get complacent.       / '-'  '-' \\
-"The calm before the storm."                                           |  SHERIFF |
-And that's why they are here.                                          |   .--.   |
-To watch. To protect. And, if necessary, to take action.               |  ( 19 )  |
-                                                                       \\   '--'   /
-Today, they are the sheriff.                                            '--.  .--'
-                                                                            \\/  
-
+                                                                             ,
+The figure takes a deep breath, preparing themselves for the worst.     ,   / \\   ,
+Things had been quiet, but that was no reason to get complacent.       / '-'   '-' \\
+"The calm before the storm."                                           |  SHERIFF  |
+And that's why they are here.                                          |   .---.   |
+To watch. To protect. And, if necessary, to take action.               |  ( 109 )  |
+                                                                       \\   '---'   /
+Today, they are the Sheriff.                                            '--.   .--'
+                                                                            \\ /  
+                                                                             \`
 > Press the start button to begin.`,
     [transition_100000]
 );
