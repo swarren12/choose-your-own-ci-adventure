@@ -41,8 +41,15 @@ function _build() {
 # Run the app
 #
 function _run() {
-    _bazel run -- @pnpm//:pnpm --dir $PWD install
-    _bazel run -- @pnpm//:pnpm --dir $PWD run preview
+    _bazel run -- @pnpm//:pnpm --dir "${PWD}" install
+    if [ "${1:-}" != '--production' ]
+    then
+      _bazel run -- @pnpm//:pnpm --dir "${PWD}" run serve "$@"
+    else
+      shift 1
+      _bazel run -- @pnpm//:pnpm --dir "${PWD}" run build
+      _bazel run -- @pnpm//:pnpm --dir "${PWD}" run preview "$@"
+    fi
 }
 
 #
