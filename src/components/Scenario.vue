@@ -6,35 +6,23 @@
 import Job from '@/components/Job.vue';
 import TransitionBtn from '@/components/Transition.vue';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {computed, ref} from 'vue';
+import {ref} from 'vue';
 
 const props = defineProps(['scenario']);
 
 const start = props['scenario'];
 const scenario = ref(start);
-const duration = ref(0);
-
-const formatted_duration = computed(() => {
-  const total_seconds = duration.value;
-  const hours = Math.floor(total_seconds / (60 * 60));
-  const minutes = Math.floor((total_seconds - (hours * 60 * 60)) / 60);
-  const seconds = (total_seconds - (hours * 60 * 60)) - (minutes * 60);
-
-  if (hours > 0) return `${hours}h ${minutes}m ${seconds}s`;
-  if (minutes > 0) return `${minutes}m ${seconds}s`;
-  return `${seconds}s`;
-})
+console.log('Initial state', start);
 
 /*
  * Handle a transition being clicked.
  */
 const on_transition = function (transition) {
-  console.log(transition);
+  // console.log('Applying transition:', transition);
   const next = transition.apply(scenario.value);
-  console.log(next);
+  console.log('New scenario:', next);
 
   scenario.value = next;
-  duration.value += transition.duration;
 }
 
 /*
@@ -86,7 +74,7 @@ const create_dot_graph = function () {
     </header>
 
     <section id='ci' class='d-flex flex-row flex-grow-0'>
-      <Job v-for='job in scenario.jobs' :job='job'/>
+      <Job v-for='job in scenario.state.jobs' :job='job'/>
     </section>
 
     <section id='narration' class='flex-grow-1 p-4 fs-5 position-relative'>
@@ -94,7 +82,7 @@ const create_dot_graph = function () {
 
       <div id='controls'>
         <font-awesome-icon :icon='["fas", "exclamation-triangle"]' @click='create_dot_graph'/>
-        <h2>({{ formatted_duration }})</h2>
+        <h2>({{ scenario.state.current_time }})</h2>
       </div>
     </section>
 

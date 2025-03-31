@@ -3,38 +3,36 @@
 //
 
 import Scenario2 from '@/pages/Scenario2.vue';
-import {Job, JobStatus, Scenario, Transition} from '@/utils.mjs';
+import {Commit, Job, JobStatus, NOTHING_SPECIAL_HAPPENS, Scenario, Transition, WorldState} from '@/utils.mjs';
+
+const MUCH_MUCH_EARLIER = new Date(2025, 4, 1, 13, 2, 1);
+const MUCH_EARLIER = new Date(2025, 4, 1, 13, 23, 14);
+const EARLIER = new Date(2025, 4, 1, 13, 40, 8);
+const BEGIN = new Date(2025, 4, 1, 13, 52, 32);
 
 // Jobs
 
-const job_commit = new Job('commit', JobStatus.DISABLED);
-const job_acceptance = new Job('acceptance', JobStatus.DISABLED);
-const job_integration = new Job('integration', JobStatus.DISABLED);
-const job_analysis = new Job('analysis', JobStatus.DISABLED);
+const job_commit = new Job('commit', 75, ['acceptance', 'integration', 'analysis']);
+const job_acceptance = new Job('acceptance', 1155);
+const job_integration = new Job('integration', 544);
+const job_analysis = new Job('analysis', 182);
 
-const jobs = {
-    'commit': job_commit,
-    'acceptance': job_acceptance,
-    'integration': job_integration,
-    'analysis': job_analysis,
-}
+const jobs = [job_commit, job_acceptance, job_integration, job_analysis];
 
-/* Template */
-const transition_1xxxxx = new Transition(
-    '',
-    `
-    
-    
-> ?`,
-    0,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance,
-        'integration': job_integration,
-        'analysis': job_analysis,
-    },
-    []
-);
+// Commits
+
+const commit1 = new Commit('Fix spelling of Charcuterie', 'charlesb@example.co');
+const commit2 = new Commit('Add extra verification step for withdrawing yoghurt', 'terryj@example.co');
+const commit3 = new Commit('Avoid unnecessary work', 'norms@example.co');
+const commits = [commit1, commit2, commit3];
+
+commit1.expect_failures('analysis', 1);
+commit2.expect_failures('acceptance', 26);
+commit2.expect_failures('integration', 4);
+
+// World State
+
+const state = new WorldState(jobs, commits, BEGIN);
 
 // Transitions
 
@@ -66,12 +64,7 @@ The plot thickens, like milk turning into yoghurt.
 
 > What should the Sheriff do now?`,
     5,
-    {
-        'commit': job_commit.pass().at(90),
-        'acceptance': job_acceptance.fail(26).at(39),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [/*transition_100321, transition_100320*/]
 );
 
@@ -84,12 +77,7 @@ const transition_100303 = new Transition(
 
 > How should the Sheriff proceed?`,
     10,
-    {
-        'commit': job_commit.pass().at(17),
-        'acceptance': job_acceptance.fail(26).at(39),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [/*transition_100306, transition_100320*/]
 );
 
@@ -109,12 +97,7 @@ Underneath, there is a link to the details of the test failures.
 
 > What should the Sheriff do now?`,
     12,
-    {
-        'commit': job_commit.pass().at(22),
-        'acceptance': job_acceptance.fail(26).at(37),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100303, transition_100304]
 );
 
@@ -133,12 +116,7 @@ Underneath, there is a link to the details of the test failures.
 
 > What should the Sheriff do now?`,
     12,
-    {
-        'commit': job_commit.pass().at(14),
-        'acceptance': job_acceptance.fail(26).at(34),
-        'integration': job_integration.fail(4).at(82),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100303, transition_100304]
 );
 
@@ -159,23 +137,18 @@ The build history shows the following runs:
 
 > What should the Sheriff do now?`,
     10,
-    {
-        'commit': job_commit.pass().at(14),
-        'acceptance': job_acceptance.fail(26).at(34),
-        'integration': job_integration.fail(4).at(82),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100301, transition_100302]
 );
 
 // 1002xx: Integration
 
 /* No tests, only pushes */
-const transition_100225 = new Transition(
-    100225,
-    'Push the revert',
+const transition_100226 = new Transition(
+    100226,
+    'Push the reverts',
     `"All justice is best served swiftly".                                  ⠀⠀⠀⠀⠀⠀⠀⢀⡠⠤⠄⠀⠒⠂⢀⡤⠤⢀⡀⠀⠀⠀⠀⠀⠀⠀
-The Sheriff wastes no more time.                                       ⠀⠀⠀⠀⡀⠔⢈⠀⠀⡿⠀⢀⣤⡄⠈⠋⢁⣀⠀⢈⡒⢄⠀⠀⠀⠀
+The Sheriff wastes no time.                                            ⠀⠀⠀⠀⡀⠔⢈⠀⠀⡿⠀⢀⣤⡄⠈⠋⢁⣀⠀⢈⡒⢄⠀⠀⠀⠀
 They push the revert, making sure to run the pre-commit checks first.  ⠀⠀⣠⠊⣁⡀⠉⠋⠀⣦⠀⠀⠁⢀⠀⠀⠀⠛⠀⠘⠃⣄⠑⢄⠀⠀
                                                                        ⠀⡔⡁⠀⠉⢁⣄⠄⠀⠈⠀⣶⠀⠈⠛⠀⣠⠄⠶⠦⠀⠑⠀⢬⣧⠀
 The Sheriff sits back in their chair.                                  ⡐⠀⠿⢠⢄⠀⣀⠀⠀⡠⠄⠠⠔⠉⠢⡀⠉⠀⠀⢀⣴⠆⠀⠈⠁⢣
@@ -189,13 +162,34 @@ They think they've earned it.                                          ⠀⠸⡐
                                                                        ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
     38,
-    {
-        'commit': job_commit.pass().at(2),
-        'acceptance': job_acceptance.fail(26).at(42),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
+    (state) => {
+        state.commit('Revert \'Add extra verification step for withdrawing yoghurt\'', 'peraltaj@example.co');
+        state.commit('Revert \'Fix spelling of Charcuterie\'', 'peraltaj@example.co');
     },
     []
+);
+
+/* Measure twice, cut once */
+const transition_100225 = new Transition(
+    100225,
+    'Run the failing tests',
+    `The Sheriff remembers what their uncle once told them: "With great power comes great responsibility".
+They are confident that their revert will help.
+Confident, but not arrogant.
+
+They decide to verify this.
+
+Luckily, they can run the failing tests locally.
+There's only 4 tests so it only takes a couple of seconds to run them. 
+
+The Sheriff's smile grows a little wider.
+All 4 tests passed, just like they expected.
+
+    
+> What will the Sheriff do next?`,
+    23,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100226]
 );
 
 /* No tests, only pushes */
@@ -217,11 +211,8 @@ They think they've earned it.                                          ⠀⠸⡐
                                                                        ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
     38,
-    {
-        'commit': job_commit.pass().at(2),
-        'acceptance': job_acceptance.fail(26).at(42),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
+    (state) => {
+        state.commit('Revert \'Add extra verification step for withdrawing yoghurt\'', 'peraltaj@example.co');
     },
     []
 );
@@ -245,13 +236,8 @@ All 4 tests passed, just like they expected.
     
 > What will the Sheriff do next?`,
     23,
-    {
-        'commit': job_commit.pass(),
-        'acceptance': job_acceptance.fail(26).at(42),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
-    [transition_100225]
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100224]
 );
 
 /* No tests, only pushes */
@@ -283,13 +269,8 @@ Not only will it tell others why the change was reverted, it will also help trac
 
 > What will the Sheriff do next?`,
     49,
-    {
-        'commit': job_commit.pass(),
-        'acceptance': job_acceptance.fail(26).at(41),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
-    [transition_100225, transition_100223]
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100224, transition_100223]
 );
 
 /* Revert, for the sake of yoghurt lovers everywhere... */
@@ -308,12 +289,7 @@ They review their work:
     
 > What will the Sheriff do next?`,
     17,
-    {
-        'commit': job_commit.pass(),
-        'acceptance': job_acceptance.fail(26).at(40),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100222, transition_100224, transition_100223]
 );
 
@@ -340,46 +316,8 @@ They review their work:
     
 > What will the Sheriff do next?`,
     12,
-    {
-        'commit': job_commit.pass(),
-        'acceptance': job_acceptance.fail(26).at(40),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
-    [transition_100224, transition_100223]
-);
-
-/* Error message in a bottle */
-const transition_100207 = new Transition(
-    100207,
-    'Look at failures',
-    `The Sheriff clicks the link to view the test failure details.
-
-A new page loads.
-It contains details on the 4 failures.
-
-The Sheriff scans the list.
-All the tests appear to fail for the same reason:
-
---------------------------------------------------------------
-1) shouldBeAbleToWithdrawYoghurt() (co.example.tests.integration.fridge.FridgeIntegrationTest)
-org.opentest4j.AssertionFailedError: "Permission denied"
-        at co.example.tests.integration.fridge.FridgeIntegrationTest.shouldBeAbleToWithdrawYoghurt(FridgeIntegrationTest.java:17)
-...
---------------------------------------------------------------
-
-The plot thickens, like milk turning into yoghurt.
-
-
-> What should the Sheriff do now?`,
-    5,
-    {
-        'commit': job_commit.pass().at(90),
-        'acceptance': job_acceptance.fail(26).at(39),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
-    [transition_100221, transition_100220]
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100226, transition_100225]
 );
 
 /* Error message in a bottle */
@@ -406,12 +344,7 @@ The plot thickens, like milk turning into yoghurt.
 
 > What should the Sheriff do now?`,
     5,
-    {
-        'commit': job_commit.pass().at(90),
-        'acceptance': job_acceptance.fail(26).at(39),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100221, transition_100220]
 );
 
@@ -424,12 +357,7 @@ const transition_100205 = new Transition(
 
 > How should the Sheriff proceed?`,
     10,
-    {
-        'commit': job_commit.pass().at(17),
-        'acceptance': job_acceptance.fail(26).at(39),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100206, transition_100220]
 );
 
@@ -449,12 +377,7 @@ Underneath, there is a link to the details of the test failures.
 
 > What should the Sheriff do now?`,
     18,
-    {
-        'commit': job_commit.pass().at(27),
-        'acceptance': job_acceptance.fail(26).at(38),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100205, transition_100206]
 );
 
@@ -473,13 +396,8 @@ Underneath, there is a link to the details of the test failures.
 
 > What should the Sheriff do now?`,
     5,
-    {
-        'commit': job_commit.pass().at(22),
-        'acceptance': job_acceptance.fail(26).at(37),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
-    [transition_100204, transition_100207]
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100204, transition_100206]
 );
 
 /* Out with the old... */
@@ -498,12 +416,7 @@ Underneath, there is a link to the details of the test failures.
 
 > What should the Sheriff do now?`,
     35,
-    {
-        'commit': job_commit.pass().at(14),
-        'acceptance': job_acceptance.fail(26).at(34),
-        'integration': job_integration.fail(4).at(82),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100205, transition_100206]
 );
 
@@ -525,12 +438,7 @@ The build history shows the following runs:
 
 > What should the Sheriff do now?`,
     52,
-    {
-        'commit': job_commit.pass().at(21),
-        'acceptance': job_acceptance.fail(26).at(37),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100203, transition_100204]
 );
 
@@ -553,21 +461,16 @@ The build history shows the following runs:
 
 > What should the Sheriff do now?`,
     10,
-    {
-        'commit': job_commit.pass().at(14),
-        'acceptance': job_acceptance.fail(26).at(34),
-        'integration': job_integration.fail(4).at(82),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100201, transition_100202]
 );
 
 // 1001xx: Acceptance
 
 /* No tests, only pushes */
-const transition_100125 = new Transition(
+const transition_100126 = new Transition(
     100125,
-    'Push the revert',
+    'Push the reverts',
     `"All justice is best served swiftly".                                  ⠀⠀⠀⠀⠀⠀⠀⢀⡠⠤⠄⠀⠒⠂⢀⡤⠤⢀⡀⠀⠀⠀⠀⠀⠀⠀
 The Sheriff wastes no more time.                                       ⠀⠀⠀⠀⡀⠔⢈⠀⠀⡿⠀⢀⣤⡄⠈⠋⢁⣀⠀⢈⡒⢄⠀⠀⠀⠀
 They push the revert, making sure to run the pre-commit checks first.  ⠀⠀⣠⠊⣁⡀⠉⠋⠀⣦⠀⠀⠁⢀⠀⠀⠀⠛⠀⠘⠃⣄⠑⢄⠀⠀
@@ -583,13 +486,35 @@ They think they've earned it.                                          ⠀⠸⡐
                                                                        ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
     38,
-    {
-        'commit': job_commit.pass().at(2),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
+    (state) => {
+        state.commit('Revert \'Avoid unnecessary work\'', 'peraltaj@example.co');
+        state.commit('Revert \'Add extra verification step for withdrawing yoghurt\'', 'peraltaj@example.co');
+        state.commit('Revert \'Fix spelling of Charcuterie\'', 'peraltaj@example.co');
     },
     []
+);
+
+/* Measure twice, cut once */
+const transition_100125 = new Transition(
+    100123,
+    'Run the failing tests',
+    `The Sheriff remembers what their uncle once told them: "With great power comes great responsibility".
+They are confident that their revert will help.
+Confident, but not arrogant.
+
+They decide to verify this.
+
+Luckily, they can run the failing tests locally.
+Even though it's only 26 tests the process still takes a few minutes, but eventually the test run completes.
+
+The Sheriff's smile grows a little wider.
+All the tests passed, just like they expected.
+
+    
+> What will the Sheriff do next?`,
+    188,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100126]
 );
 
 /* No tests, only pushes */
@@ -611,11 +536,8 @@ They think they've earned it.                                          ⠀⠸⡐
                                                                        ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
     38,
-    {
-        'commit': job_commit.pass().at(2),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
+    (state) => {
+        state.commit('Revert \'Add extra verification step for withdrawing yoghurt\'', 'peraltaj@example.co');
     },
     []
 );
@@ -639,12 +561,7 @@ All the tests passed, just like they expected.
     
 > What will the Sheriff do next?`,
     188,
-    {
-        'commit': job_commit.pass(),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100125]
 );
 
@@ -686,12 +603,7 @@ Not only will it tell others why the change was reverted, it will also help trac
 
 > What will the Sheriff do next?`,
     49,
-    {
-        'commit': job_commit.pass(),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100125, transition_100123]
 );
 
@@ -727,12 +639,7 @@ Is there more they can - more they should - do?
 
 > What will the Sheriff do next?`,
     17,
-    {
-        'commit': job_commit.pass(),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100122, transition_100124, transition_100123]
 );
 
@@ -766,13 +673,8 @@ They review the changes:
     
 > What will the Sheriff do next?`,
     12,
-    {
-        'commit': job_commit.pass(),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
-    [transition_100124, transition_100123]
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100126, transition_100125]
 );
 
 /* Error message in a bottle */
@@ -811,12 +713,7 @@ The plot thickens, like milk turning into yoghurt.
 
 > What should the Sheriff do now?`,
     5,
-    {
-        'commit': job_commit.pass().at(90),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100121, transition_100120]
 );
 
@@ -856,12 +753,7 @@ The plot thickens, like milk turning into yoghurt.
 
 > What should the Sheriff do now?`,
     5,
-    {
-        'commit': job_commit.pass().at(90),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [] // TODO -> transition to "Revert", but will need to work out what?
 );
 
@@ -893,12 +785,7 @@ Without that information there would be no way to rule out any of the suspects.
 
 > How should the Sheriff proceed?`,
     10,
-    {
-        'commit': job_commit.pass().at(17),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100106, transition_100120]
 );
 
@@ -927,12 +814,7 @@ Almost certainly.
 
 > What should the Sheriff do now?`,
     18,
-    {
-        'commit': job_commit.pass().at(78),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100105, transition_100106]
 );
 
@@ -949,12 +831,7 @@ Underneath, there is a link to the details of the test failures.
 
 > What should the Sheriff do now?`,
     5,
-    {
-        'commit': job_commit.pass().at(77),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100104, transition_100107]
 );
 
@@ -983,12 +860,7 @@ Almost certainly.
 
 > What should the Sheriff do now?`,
     35,
-    {
-        'commit': job_commit.pass().at(14),
-        'acceptance': job_acceptance.fail(26).at(34),
-        'integration': job_integration.fail(4).at(82),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100105, transition_100106]
 );
 
@@ -1009,12 +881,7 @@ The build history shows the following runs:
 
 > What should the Sheriff do now?`,
     615,
-    {
-        'commit': job_commit.pass().at(76),
-        'acceptance': job_acceptance.fail(26),
-        'integration': job_integration.fail(4),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100103, transition_100104]
 );
 
@@ -1036,12 +903,7 @@ The build history shows the following runs:
 
 > What should the Sheriff do now?`,
     10,
-    {
-        'commit': job_commit.pass().at(14),
-        'acceptance': job_acceptance.fail(26).at(34),
-        'integration': job_integration.fail(4).at(82),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100101, transition_100102]
 );
 
@@ -1074,12 +936,7 @@ Any failures here are likely to be genuine.
 
 > Where should the Sheriff focus their attention?`,
     10,
-    {
-        'commit': job_commit.pass().at(13),
-        'acceptance': job_acceptance.fail(26).at(34),
-        'integration': job_integration.fail(4).at(81),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100100, transition_100200, transition_100300]
 );
 
@@ -1114,12 +971,7 @@ And with no suspects and no evidence, they have no case.
 
 > What should the Sheriff do?`,
     5,
-    {
-        'commit': job_commit.pass().at(12),
-        'acceptance': job_acceptance.fail(26).at(34),
-        'integration': job_integration.fail(4).at(81),
-        'analysis': job_analysis.fail(1),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_100002]
 );
 
@@ -1135,11 +987,21 @@ Tsk.
 
 > What should the Sheriff do?`,
     0,
-    {
-        'commit': job_commit.pass().at(11),
-        'acceptance': job_acceptance.fail(26).at(33),
-        'integration': job_integration.fail(4).at(80),
-        'analysis': job_analysis.fail(1).at(99),
+    (state) => {
+        // Commit state
+        state.add_build('commit', [commit1], JobStatus.PASS, MUCH_MUCH_EARLIER);
+        state.add_build('commit', [commit2], JobStatus.PASS, MUCH_MUCH_EARLIER);
+        state.add_build('commit', [commit3], JobStatus.PASS, MUCH_MUCH_EARLIER);
+
+        // Previous failures
+        state.add_build('acceptance', [commit1, commit2, commit3], JobStatus.FAIL, MUCH_EARLIER, 100, 26);
+        state.add_build('integration', [commit1, commit2], JobStatus.FAIL, MUCH_EARLIER, 100, 4);
+        state.add_build('analysis', [commit1, commit2], JobStatus.FAIL, MUCH_EARLIER, 100, 1);
+
+        // Current runs
+        state.add_build('acceptance', [commit1, commit2, commit3], null, EARLIER, 51);
+        state.add_build('integration', [commit1, commit2, commit3], null, EARLIER, 60);
+        state.add_build('analysis', [commit1, commit2, commit3], null, EARLIER, 99);
     },
     [transition_100001, transition_100002]
 );
@@ -1150,7 +1012,7 @@ const scenario = new Scenario(
     'on-the-beat',
     'On the beat',
     Scenario2,
-    jobs,
+    state,
     `Rain, cold and relentless, pounded on the window of the small home-office.
 The inside was dark; natural light was scarce at the best of times and the inclement weather just made it worse.
 

@@ -3,17 +3,33 @@
 //
 
 import Scenario1 from '@/pages/Scenario1.vue';
-import {Job, JobStatus, Scenario, Transition} from '@/utils.mjs';
+import {Commit, Job, JobStatus, NOTHING_SPECIAL_HAPPENS, Scenario, Transition, WorldState} from '@/utils.mjs';
+
+const MUCH_MUCH_EARLIER = new Date(2025, 4, 1, 11, 15, 33);
+const MUCH_EARLIER = new Date(2025, 4, 1, 11, 35, 56);
+const EARLIER = new Date(2025, 4, 1, 11, 40, 8);
+const BEGIN = new Date(2025, 4, 1, 12, 4, 32);
 
 // Jobs
 
-const job_commit = new Job('commit', JobStatus.PASS);
-const job_acceptance = new Job('acceptance', JobStatus.PASS).at(75);
+const job_commit = new Job('commit', 183, ['acceptance']);
+const job_acceptance = new Job('acceptance', 1223);
 
-const jobs = {
-    'commit': job_commit,
-    'acceptance': job_acceptance,
-}
+const jobs = [job_commit, job_acceptance]
+
+// Commits
+
+const initial_commit = new Commit('Refactor class in project/service', 'you@example.co');
+initial_commit.expect_failures('acceptance', 100);
+const commits = [initial_commit];
+
+job_commit.add_build([initial_commit], JobStatus.PASS, MUCH_EARLIER, 100, 0);
+job_acceptance.add_build([], JobStatus.PASS, MUCH_MUCH_EARLIER, 100, 0);
+job_acceptance.add_build([initial_commit], null, EARLIER, 97, 0);
+
+// World State
+
+const state = new WorldState(jobs, commits, BEGIN);
 
 // Transitions
 
@@ -28,10 +44,7 @@ const transition_1191 = new Transition(
 When you get back, everything looks happy.
 You're not 100% sure it was your revert that fixed everything, but hey, what else could it have been?`,
     0,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.at(100),
-    }
+    NOTHING_SPECIAL_HAPPENS
 );
 
 /* Wait for the commit build to finish */
@@ -41,11 +54,8 @@ const transition_1190 = new Transition(
     `Your commit completes running through the commit job.
 
 A new acceptance test run starts.`,
-    119,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100).at(1),
-    }
+    187,
+    NOTHING_SPECIAL_HAPPENS
 );
 
 /* Run pre-commit hooks */
@@ -60,9 +70,8 @@ Nothing fails locally and you see CI pick up the new revision.
 
 > What now?`,
     183,
-    {
-        'commit': job_commit.at(10),
-        'acceptance': job_acceptance.fail(100),
+    (state) => {
+        state.commit('Revert "Refactor class in project/service"', 'you@example.co');
     },
     [transition_1190, transition_1191]
 );
@@ -77,9 +86,8 @@ You ignore the pre-commit checks and push the commit.
 
 > What now?`,
     15,
-    {
-        'commit': job_commit.at(10),
-        'acceptance': job_acceptance.fail(100),
+    (state) => {
+        state.commit('Revert "Refactor class in project/service"', 'you@example.co');
     },
     [transition_1190, transition_1191]
 );
@@ -96,10 +104,7 @@ You reckon the same will be true about the revert.
 
 > Should you run the pre-commit hooks?`,
     45,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1110, transition_1111]
 );
 
@@ -129,10 +134,7 @@ Someone even brought in Lola's cupcakes.
    \`---.|.|.|.---'
 `,
     0,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.at(100),
-    }
+    NOTHING_SPECIAL_HAPPENS
 );
 
 /* Skip pre-commit hooks */
@@ -142,11 +144,8 @@ const transition_1267 = new Transition(
     `Your commit completes running through the commit job.
 
 A new acceptance test run starts.`,
-    56,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100).at(1),
-    }
+    187,
+    NOTHING_SPECIAL_HAPPENS
 );
 
 /* Skip pre-commit hooks */
@@ -159,9 +158,8 @@ You ignore the pre-commit checks and push the commit.
 
 > What now?`,
     15,
-    {
-        'commit': job_commit.at(10),
-        'acceptance': job_acceptance.fail(100),
+    (state) => {
+        state.commit('Revert "Refactor class in project/service"', 'you@example.co');
     },
     [transition_1267, transition_1268]
 );
@@ -178,9 +176,8 @@ A few seconds later, you see CI pick up the new revision.
 
 > What now?`,
     32,
-    {
-        'commit': job_commit.at(10),
-        'acceptance': job_acceptance.fail(100),
+    (state) => {
+        state.commit('Revert "Refactor class in project/service"', 'you@example.co');
     },
     [transition_1267, transition_1268]
 );
@@ -201,10 +198,7 @@ In fact, the change is so small, you're not even sure you need to run the pre-co
 
 > Ship it?`,
     0,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1265, transition_1266]
 );
 
@@ -219,10 +213,7 @@ They all pass!
     
 > Ship it?`,
     27,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1265, transition_1266]
 );
 
@@ -237,10 +228,7 @@ They all pass!
     
 > Ship it?`,
     271,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1265, transition_1266]
 );
 
@@ -254,10 +242,7 @@ You can either run all the failed tests, or just a sample.
     
 > Run all the tests?`,
     94,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1262, transition_1263]
 );
 
@@ -270,10 +255,7 @@ const transition_1260 = new Transition(
 
 > Do you want to run the tests locally?`,
     52,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1261, transition_1264]
 );
 
@@ -289,10 +271,7 @@ You reckon the same will be true about the revert.
 
 > Should you run the pre-commit hooks?`,
     0,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1110, transition_1111]
 );
 
@@ -308,10 +287,7 @@ You reckon the same will be true about the revert.
 
 > Should you run the pre-commit hooks?`,
     30,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1110, transition_1111]
 );
 
@@ -326,10 +302,7 @@ You realise that, since you know what test failed, you could include this in the
 
 > Do you want to change the commit message?`,
     45,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1251, transition_1252]
 );
 
@@ -345,10 +318,7 @@ You reckon the same will be true about the revert.
 
 > Should you run the pre-commit hooks?`,
     30,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1110, transition_1111]
 );
 
@@ -363,10 +333,7 @@ You realise that, since you have details of the failure reason, you could includ
 
 > Do you want to change the commit message?`,
     45,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1241, transition_1252]
 );
 
@@ -384,13 +351,13 @@ They all look similar:
 
 --------------------------------------------------------------
 Failures: 1
-1) shouldDoTheThingYouExpectedItTo() (com.example.tests.acceptance.MyLovelyHorseAcceptanceTest)
+1) shouldDoTheThingYouExpectedItTo() (co.example.tests.acceptance.ProjectServiceAcceptanceTest)
 org.opentest4j.AssertionFailedError: 
 expected: 
   "Hello and welcome to ProductService!"
  but was: 
   "Hello and welcome to ProductService."
-        at com.example.tests.acceptance.MyLovelyHorseAcceptanceTest.shouldDoTheThingYouExpectedItTo(MyLovelyHorseAcceptanceTest.java:34)
+        at co.example.tests.acceptance.ProjectServiceAcceptanceTest.shouldDoTheThingYouExpectedItTo(ProjectServiceAcceptanceTest.java:34)
 --------------------------------------------------------------
     
 This seems a straightforward thing to fix.
@@ -399,10 +366,7 @@ This seems a straightforward thing to fix.
 > Should you fix forward?
 `,
     209,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1240, transition_1260]
 );
 
@@ -425,10 +389,7 @@ You scan the list of failures and see that a suite of tests related to your chan
 
 > What now?`,
     300,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1210, transition_1250]
 );
 
@@ -442,10 +403,7 @@ const transition_1390 = new Transition(
 
 It's not that bad— after all, most of them only just got back from lunch, right???`,
     127,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100).at(1),
-    }
+    NOTHING_SPECIAL_HAPPENS
 );
 
 /* Gone for lunch: back soon */
@@ -464,10 +422,7 @@ A fourth colleague is informing you not only that you have broken the tests, but
 How helpful of them.
 Thank you, colleague #4!`,
     3586,
-    {
-        'commit': job_commit.at(14),
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1390]
 );
 
@@ -484,10 +439,7 @@ As far as you're aware, only your commit is in that build.
 
 > What should you do?`,
     0,
-    {
-        'commit': job_commit,
-        'acceptance': job_acceptance.fail(100),
-    },
+    NOTHING_SPECIAL_HAPPENS,
     [transition_1100, transition_1200, transition_1300]
 );
 
@@ -497,7 +449,7 @@ const scenario = new Scenario(
     'accept-it',
     'Lunchtime blues!',
     Scenario1,
-    jobs,
+    state,
     `
 ##   ##  ######  ##      ##      ######
 ##   ##  ##      ##      ##      ##  ##
