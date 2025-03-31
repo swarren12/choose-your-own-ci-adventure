@@ -388,7 +388,7 @@ You scan the list of failures and see that a suite of tests related to your chan
 
 
 > What now?`,
-    300,
+    302,
     NOTHING_SPECIAL_HAPPENS,
     [transition_1210, transition_1250]
 );
@@ -446,7 +446,7 @@ As far as you're aware, only your commit is in that build.
 // Scenario
 
 const scenario = new Scenario(
-    'accept-it',
+    'out-for-lunch',
     'Lunchtime blues!',
     Scenario1,
     state,

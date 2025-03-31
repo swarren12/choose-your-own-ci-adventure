@@ -63,7 +63,7 @@ The plot thickens, like milk turning into yoghurt.
 
 
 > What should the Sheriff do now?`,
-    5,
+    67,
     NOTHING_SPECIAL_HAPPENS,
     [/*transition_100321, transition_100320*/]
 );
@@ -76,7 +76,7 @@ const transition_100303 = new Transition(
 
 
 > How should the Sheriff proceed?`,
-    10,
+    72,
     NOTHING_SPECIAL_HAPPENS,
     [/*transition_100306, transition_100320*/]
 );
@@ -96,7 +96,7 @@ Underneath, there is a link to the details of the test failures.
 
 
 > What should the Sheriff do now?`,
-    12,
+    74,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100303, transition_100304]
 );
@@ -115,7 +115,7 @@ Underneath, there is a link to the details of the test failures.
 
 
 > What should the Sheriff do now?`,
-    12,
+    74,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100303, transition_100304]
 );
@@ -136,7 +136,7 @@ The build history shows the following runs:
 
 
 > What should the Sheriff do now?`,
-    10,
+    40,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100301, transition_100302]
 );
@@ -161,7 +161,7 @@ They think they've earned it.                                          ⠀⠸⡐
                                                                        ⠀⠀⠀⠈⠢⠀⠀⠈⠒⠀⠂⠁⠀⠀⠉⠂⠤⠤⠐⠁⢀⠴⠋⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
-    38,
+    100,
     (state) => {
         state.commit('Revert \'Add extra verification step for withdrawing yoghurt\'', 'peraltaj@example.co');
         state.commit('Revert \'Fix spelling of Charcuterie\'', 'peraltaj@example.co');
@@ -187,7 +187,7 @@ All 4 tests passed, just like they expected.
 
     
 > What will the Sheriff do next?`,
-    23,
+    85,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100226]
 );
@@ -210,7 +210,7 @@ They think they've earned it.                                          ⠀⠸⡐
                                                                        ⠀⠀⠀⠈⠢⠀⠀⠈⠒⠀⠂⠁⠀⠀⠉⠂⠤⠤⠐⠁⢀⠴⠋⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
-    38,
+    100,
     (state) => {
         state.commit('Revert \'Add extra verification step for withdrawing yoghurt\'', 'peraltaj@example.co');
     },
@@ -235,7 +235,7 @@ All 4 tests passed, just like they expected.
 
     
 > What will the Sheriff do next?`,
-    23,
+    85,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100224]
 );
@@ -268,7 +268,7 @@ Not only will it tell others why the change was reverted, it will also help trac
 
 
 > What will the Sheriff do next?`,
-    49,
+    111,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100224, transition_100223]
 );
@@ -288,7 +288,7 @@ They review their work:
 
     
 > What will the Sheriff do next?`,
-    17,
+    79,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100222, transition_100224, transition_100223]
 );
@@ -315,7 +315,7 @@ They review their work:
 
     
 > What will the Sheriff do next?`,
-    12,
+    74,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100226, transition_100225]
 );
@@ -343,7 +343,7 @@ The plot thickens, like milk turning into yoghurt.
 
 
 > What should the Sheriff do now?`,
-    5,
+    67,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100221, transition_100220]
 );
@@ -356,7 +356,7 @@ const transition_100205 = new Transition(
 
 
 > How should the Sheriff proceed?`,
-    10,
+    72,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100206, transition_100220]
 );
@@ -376,7 +376,7 @@ Underneath, there is a link to the details of the test failures.
 
 
 > What should the Sheriff do now?`,
-    18,
+    80,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100205, transition_100206]
 );
@@ -395,7 +395,7 @@ Underneath, there is a link to the details of the test failures.
 
 
 > What should the Sheriff do now?`,
-    5,
+    67,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100204, transition_100206]
 );
@@ -415,7 +415,7 @@ Underneath, there is a link to the details of the test failures.
 
 
 > What should the Sheriff do now?`,
-    35,
+    97,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100205, transition_100206]
 );
@@ -460,7 +460,7 @@ The build history shows the following runs:
 
 
 > What should the Sheriff do now?`,
-    10,
+    40,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100201, transition_100202]
 );
@@ -485,7 +485,7 @@ They think they've earned it.                                          ⠀⠸⡐
                                                                        ⠀⠀⠀⠈⠢⠀⠀⠈⠒⠀⠂⠁⠀⠀⠉⠂⠤⠤⠐⠁⢀⠴⠋⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
-    38,
+    100,
     (state) => {
         state.commit('Revert \'Avoid unnecessary work\'', 'peraltaj@example.co');
         state.commit('Revert \'Add extra verification step for withdrawing yoghurt\'', 'peraltaj@example.co');
@@ -512,7 +512,7 @@ All the tests passed, just like they expected.
 
     
 > What will the Sheriff do next?`,
-    188,
+    250,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100126]
 );
@@ -535,7 +535,7 @@ They think they've earned it.                                          ⠀⠸⡐
                                                                        ⠀⠀⠀⠈⠢⠀⠀⠈⠒⠀⠂⠁⠀⠀⠉⠂⠤⠤⠐⠁⢀⠴⠋⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
                                                                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
-    38,
+    100,
     (state) => {
         state.commit('Revert \'Add extra verification step for withdrawing yoghurt\'', 'peraltaj@example.co');
     },
@@ -560,7 +560,7 @@ All the tests passed, just like they expected.
 
     
 > What will the Sheriff do next?`,
-    188,
+    250,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100125]
 );
@@ -602,7 +602,7 @@ Not only will it tell others why the change was reverted, it will also help trac
 
 
 > What will the Sheriff do next?`,
-    49,
+    111,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100125, transition_100123]
 );
@@ -638,7 +638,7 @@ Is there more they can - more they should - do?
 
 
 > What will the Sheriff do next?`,
-    17,
+    79,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100122, transition_100124, transition_100123]
 );
@@ -672,7 +672,7 @@ They review the changes:
 
     
 > What will the Sheriff do next?`,
-    12,
+    74,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100126, transition_100125]
 );
@@ -712,7 +712,7 @@ The plot thickens, like milk turning into yoghurt.
 
 
 > What should the Sheriff do now?`,
-    5,
+    67,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100121, transition_100120]
 );
@@ -752,7 +752,7 @@ The plot thickens, like milk turning into yoghurt.
 
 
 > What should the Sheriff do now?`,
-    5,
+    67,
     NOTHING_SPECIAL_HAPPENS,
     [] // TODO -> transition to "Revert", but will need to work out what?
 );
@@ -784,7 +784,7 @@ Without that information there would be no way to rule out any of the suspects.
 
 
 > How should the Sheriff proceed?`,
-    10,
+    72,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100106, transition_100120]
 );
@@ -813,7 +813,7 @@ Almost certainly.
 
 
 > What should the Sheriff do now?`,
-    18,
+    80,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100105, transition_100106]
 );
@@ -830,7 +830,7 @@ Underneath, there is a link to the details of the test failures.
 
 
 > What should the Sheriff do now?`,
-    5,
+    67,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100104, transition_100107]
 );
@@ -859,7 +859,7 @@ Almost certainly.
 
 
 > What should the Sheriff do now?`,
-    35,
+    97,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100105, transition_100106]
 );
@@ -902,7 +902,7 @@ The build history shows the following runs:
 
 
 > What should the Sheriff do now?`,
-    10,
+    40,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100101, transition_100102]
 );
@@ -935,7 +935,7 @@ Any failures here are likely to be genuine.
 
 
 > Where should the Sheriff focus their attention?`,
-    10,
+    72,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100100, transition_100200, transition_100300]
 );
@@ -970,7 +970,7 @@ And with no suspects and no evidence, they have no case.
 
 
 > What should the Sheriff do?`,
-    5,
+    67,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100002]
 );
