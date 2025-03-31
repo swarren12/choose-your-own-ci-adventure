@@ -450,21 +450,25 @@ const scenario = new Scenario(
     'Lunchtime blues!',
     Scenario1,
     state,
-    `
-##   ##  ######  ##      ##      ######
-##   ##  ##      ##      ##      ##  ##
-#######  ######  ##      ##      ##  ##
-##   ##  ##      ##      ##      ##  ##
-##   ##  ######  ######  ######  ######
+    `You check the clock...
+    
+    ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜
+    ▌  ████   ██████    ██████     ██  ▐
+    ▌    ██       ██ ██ ██  ██   ████  ▐
+    ▌    ██   ██████    ██  ██ ██  ██  ▐
+    ▌    ██   ██     ██ ██  ██ ██████  ▐
+    ▌  ██████ ██████    ██████     ██  ▐
+    ▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟
 
-It's 12:04.
+You sigh.
+You really need to get a better clock.
+Anyway...
 
-All your colleagues have left for lunch.
+It seems that all your colleagues have left for lunch.
 You're planning on joining them, but you shipped a change a little while ago and you're keeping an eye on it.
 
 
-> Press the start button to begin.
-`,
+> Press the start button to begin.`,
     [transition_1000]
 );
 
