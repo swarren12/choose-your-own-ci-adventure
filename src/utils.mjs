@@ -166,7 +166,15 @@ export class Job {
                     // console.debug('Latest build of job', this._name, 'is still in progress!');
                     clone._builds.push(latest_build._advance(clone, new_time));
                 } else {
-                    const failures = latest_build._commits.reduce((p, c) => p + c.get_expected_failures(this._name), 0);
+                    const failures = latest_build._commits.reduce(
+                        (p, c) => {
+                            if (p < 0) return p;
+                            const failures = c.get_expected_failures(this._name);
+                            if (failures < 0) return failures;
+                            return p + failures;
+                        },
+                        0
+                    );
                     const status = failures === 0 ? JobStatus.PASS : JobStatus.FAIL;
                     // console.debug('Latest build of job', this._name, 'completed. Status:', status, 'Failures:', failures);
 
@@ -176,7 +184,7 @@ export class Job {
                         status,
                         latest_build._started_at,
                         100,
-                        failures
+                        Math.max(0, failures)
                     );
                     clone._builds.push(completed);
 
@@ -472,14 +480,23 @@ export class WorldState {
         this._commits.push(commit);
 
         this._queue('commit', [commit]);
+        return commit;
     }
 
     /*
      * Add a historic build to a Job.
      */
-    add_build(job_name, commits, status, started_at, progress = 100, failures = 0) {
+    rerun(job_name, commits = null) {
         const job = this._find_job(job_name);
-        job._builds.push(new Build(job, commits, status, started_at, progress, failures));
+        job.queue(commits || job._latest_build.commits);
+    }
+
+    /*
+     * Add a historic build to a Job.
+     */
+    add_build(job_name, commits, status = null, started_at = null, progress = 100, failures = 0) {
+        const job = this._find_job(job_name);
+        job._builds.push(new Build(job, commits, status, started_at || this._time, progress, failures));
     }
 
     /*

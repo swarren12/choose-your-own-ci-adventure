@@ -10,7 +10,7 @@ const props = defineProps(['job']);
 
 const job = computed(() => props.job);
 const title = computed(() => {
-  return job.value.status !== JobStatus.FAIL
+  return job.value.failures === 0
       ? job.value.name
       : `${job.value.name} [${job.value.failures}]`
 })
