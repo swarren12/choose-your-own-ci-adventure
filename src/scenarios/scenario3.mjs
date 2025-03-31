@@ -36,7 +36,6 @@ const state = new WorldState(jobs, commits, BEGIN);
 
 // 19xxxx: Finale
 
-
 /* Second time lucky, I guess */
 const transition_190001 = new Transition(
     190001,
@@ -106,7 +105,7 @@ const transition_150302 = new Transition(
 
 
 > How do you respond?`,
-    45,
+    61,
     NOTHING_SPECIAL_HAPPENS,
     [transition_150310]
 );
@@ -129,7 +128,7 @@ const transition_150301 = new Transition(
 
 
 > How do you respond?`,
-    5,
+    113,
     NOTHING_SPECIAL_HAPPENS,
     [transition_150310, transition_150302]
 );
@@ -153,7 +152,7 @@ const transition_150300 = new Transition(
 
 
 > How do you respond?`,
-    5,
+    101,
     NOTHING_SPECIAL_HAPPENS,
     [transition_150310, transition_150302]
 );
@@ -174,7 +173,7 @@ const transition_150200 = new Transition(
 
 
 > How do you respond?`,
-    13,
+    59,
     NOTHING_SPECIAL_HAPPENS,
     [transition_150300]
 );
@@ -235,7 +234,7 @@ const transition_100300 = new Transition(
 
 
 > How do you respond?`,
-    29,
+    81,
     (state) => {
         state.rerun('commit')
     },
@@ -253,12 +252,13 @@ const transition_100210 = new Transition(
       [You] we should revert the commit first, just in case
 [Colleague] Okay, I'll do that now!
 ...
-[Colleague] Done.
+[Colleague] Done - it took a while because it was my first commit of the day.
 [Colleague] The revert should be landing in CI any moment.
+[Colleague] What next?
 
 
 > How do you respond?`,
-    31,
+    311,
     (state) => {
         const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'colleague@example.co');
         revert.expect_failures("commit", -1);
@@ -285,9 +285,33 @@ const transition_100200 = new Transition(
 
 
 > How do you respond?`,
-    29,
+    94,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100210, transition_100300, transition_150310, transition_150302]
+);
+
+/* A quick peek won't hurt? */
+const transition_100201 = new Transition(
+    100201,
+    'Investigate',
+    `--- Conversation started @ 09:13 ---
+
+      [You] whilst we wait, maybe we should look at what went wrong
+      [You] it doesn't look like any tests failed
+[Colleague] I had a look in the job log but I couldn't find anything obvious.
+[Colleague] The last few lines just look like this:
+              > Building application... (eta: 25s)
+              > [1]    172896 killed     fancy-build-script.sh
+              > Job failed (exit=137)
+[Colleague] That doesn't seem very helpful.
+      [You] you're right, that message doesn't tell us very much
+[Colleague] Is there any way we can get more information?
+
+
+> How do you respond?`,
+    94,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_150310, transition_150302]
 );
 
 // 1001xx: Help out the colleague
@@ -295,7 +319,7 @@ const transition_100200 = new Transition(
 /* No way, Jose */
 const transition_100121 = new Transition(
     100121,
-    'No',
+    'Actually...',
     `--- Conversation started @ 09:13 ---
 
       [You] maybe we shouldn't be so hasty
@@ -305,7 +329,7 @@ const transition_100121 = new Transition(
       [You] well...
 
 > How do you respond?`,
-    22,
+    72,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100300, transition_100200]
 );
@@ -320,17 +344,18 @@ const transition_100120 = new Transition(
       [You] there's no need to worry, they can always reapply it later
 [Colleague] Okay, I'll do that now!
 ...
-[Colleague] Done.
+[Colleague] Done - it took a while because it was my first commit of the day.
 [Colleague] The revert should be landing in CI any moment.
+[Colleague] What next?
 
 
 > How do you respond?`,
-    47,
+    311,
     (state) => {
         const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'colleague@example.co');
         revert.expect_failures("commit", -1);
     },
-    [transition_100302]
+    [transition_100302, transition_100201]
 );
 
 /* Take matters into your own hands */
@@ -343,12 +368,13 @@ const transition_100113 = new Transition(
       [You] no point wasting any time
 [Colleague] Okay, I'll do that now!
 ...
-[Colleague] Done.
+[Colleague] Done - it took a while because it was my first commit of the day.
 [Colleague] The revert should be landing in CI any moment.
+[Colleague] What next?
 
 
 > How do you respond?`,
-    47,
+    311,
     (state) => {
         const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'colleague@example.co');
         revert.expect_failures("commit", -1);
@@ -368,15 +394,16 @@ const transition_100112 = new Transition(
 ...
 [Colleague] They were a bit reluctant, but eventually they agreed.
 [Colleague] Their revert should be landing in CI any moment.
+[Colleague] What next?
 
 
 > How do you respond?`,
-    93,
+    153,
     (state) => {
         const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'person2@example.co');
         revert.expect_failures("commit", -1);
     },
-    [transition_100302]
+    [transition_100302, transition_100201]
 );
 
 /* Well, they would say that, wouldn't they... */
@@ -386,11 +413,11 @@ const transition_100111 = new Transition(
     `--- Conversation started @ 09:13 ---
 
       [You] even so, we should revert it anyway, just to be sure
-[Colleague] Should I do that, or should I ask them to?
+[Colleague] Should I ask them to, or should I just do it myself?
 
 
 > How do you respond?`,
-    28,
+    88,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100112, transition_100113]
 );
@@ -398,7 +425,7 @@ const transition_100111 = new Transition(
 /* Talkin' 'bout my generation */
 const transition_100110 = new Transition(
     100110,
-    'Ask the committer',
+    'Check with the commit author',
     `--- Conversation started @ 09:13 ---
 
       [You] have you asked the author of that commit about it?
@@ -409,7 +436,7 @@ const transition_100110 = new Transition(
 
 
 > How do you respond?`,
-    35,
+    95,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100111, transition_100200]
 );
@@ -420,12 +447,14 @@ const transition_100101 = new Transition(
     'Revert first...',
     `--- Conversation started @ 09:13 ---
 
+      [You] there's only one change in that build, right?
+[Colleague] Yes, but as I said, it doesn't look like it would break anything.
       [You] remember the golden rule of CI: "Revert first, ask questions later"
 [Colleague] So I should revert the commit?
 
 
 > How do you respond?`,
-    20,
+    64,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100120, transition_100121, transition_100110]
 );
@@ -438,17 +467,17 @@ const transition_100100 = new Transition(
 
       [You] sure
       [You] what's up?
-[Colleague] Something strange is happening in CI.
+[Colleague] It's my turn to look after CI, but it seems broken.
 [Colleague] I don't really understand what's going on.
-[Colleague] I was hoping you'd be able to help me fix it.
-      [You] what's the problem?
+[Colleague] I was hoping you'd be able to help me.
+      [You] what do you mean "seems broken"?
 [Colleague] The \`commit\` build failed but I can't work out why... 
 [Colleague] There's only one change in the last build, but it doesn't sound like it would break anything
-[Colleague] "Update tolerance threshold from 10 to 15 <person2@example.co>"
+              > "Update tolerance threshold from 10 to 15 <person2@example.co>"
 
 
 > How do you respond?`,
-    0,
+    61,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100101, transition_100110, transition_100300, transition_100200]
 );
@@ -456,8 +485,8 @@ const transition_100100 = new Transition(
 // Scenario
 
 const scenario = new Scenario(
-    'all-you-can-eat',
-    'All You Can Eat',
+    'lfg',
+    'LFG!',
     Scenario3,
     state,
     `--- Conversation started @ 09:13 ---
