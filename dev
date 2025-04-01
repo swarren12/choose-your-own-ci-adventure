@@ -53,6 +53,13 @@ function _run() {
 }
 
 #
+# Re-pin the external dependencies
+#
+function _repin() {
+    _bazel run -- @pnpm//:pnpm --dir "$PWD" install --lockfile-only
+}
+
+#
 # Clean the Bazel cache
 #
 function _clean() {
@@ -60,10 +67,15 @@ function _clean() {
 }
 
 #
-# Re-pin the external dependencies
+# Commit release
 #
-function _repin() {
-    _bazel run -- @pnpm//:pnpm --dir "$PWD" install --lockfile-only
+function _release() {
+    _bazel build '//:rfaql'
+    git checkout deploy
+    cp bazel-bin/dist/index.html .
+    git add index.html
+    git commit -m "Release new version ($(date))"
+    git checkout main
 }
 
 case "$COMMAND" in
@@ -83,11 +95,17 @@ case "$COMMAND" in
         _clean $@
     ;;
 
+    release)
+        _release $@
+    ;;
+
     help)
-        echo 'Usage: ./dev [build|repin|clean]'
+        echo 'Usage: ./dev [build|run [--production]|repin|clean|release]'
         echo
         echo '    build: build and test the application'
+        echo '      run: run the app in dev / production mode'
         echo '    repin: repin the 3rd-party dependencies'
         echo '    clean: clean the build cache'
+        echo '  release: create a release'
     ;;
 esac

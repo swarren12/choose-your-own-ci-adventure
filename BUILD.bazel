@@ -21,6 +21,7 @@ DEPS = [
 DEV_DEPS = [
     "@vitejs/plugin-vue",
     "vite",
+    "vite-plugin-singlefile",
     "vite-plugin-vue-devtools"
 ]
 
