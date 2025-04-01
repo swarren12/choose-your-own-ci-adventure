@@ -32,6 +32,20 @@ const state = new WorldState(jobs, commits, BEGIN);
 // 19xxxx: Finale
 
 /* Second time lucky, I guess */
+const transition_190002 = new Transition(
+    190002,
+    'Job done!',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
+
+    [You] I think everything should be fine now
+    [You] let me know if you have any other problems
+[Godfrey] Thanks for the help!`,
+    5,
+    NOTHING_SPECIAL_HAPPENS,
+    []
+);
+
+/* Second time lucky, I guess */
 const transition_190001 = new Transition(
     190001,
     'Job done!',
@@ -59,6 +73,164 @@ const transition_190000 = new Transition(
     []
 );
 
+// 16xxxx: Resolution
+
+/* To the victor, the spoils */
+const transition_160011 = new Transition(
+    160011,
+    'Just wait',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
+
+    [You] let's just wait for the run to finish
+[Godfrey] Sure, I'll keep an eye on it.
+      ...
+[Godfrey] Hey, the job completed!
+[Godfrey] Looks like it passed this time!
+
+
+> How do you respond?`,
+    125,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_190001, transition_190002]
+);
+
+/* Run it again, Sam */
+const transition_100610 = new Transition(
+    100610,
+    'Run it again',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
+
+    [You] maybe we should kick off a new run of the job
+[Godfrey] Good idea!
+[Godfrey] I'll kick off a new run now.
+[Godfrey] Should we do anything in the meantime?
+
+
+> How do you respond?`,
+    81,
+    (state) => {
+        state.rerun('commit')
+    },
+    [transition_160011]
+);
+
+/*  */
+const transition_160004 = new Transition(
+    160004,
+    'free -m',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
+
+    [You] you could try running \`free -h\` 
+    [You] that should show you how much memory is free 
+[Godfrey] Alright, I'll see what it says.
+     ...
+[Godfrey] Here's the result:
+            > $ free -m
+            >                total        used        free      shared  buff/cache   available
+            > Mem:           31526        8233       21518        1719        3928       23293
+            > Swap:          32767           1       32766
+[Godfrey] That looks good.
+[Godfrey] Do you think I need to do anything else?
+
+
+> How do you respond?`,
+    222,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100610, transition_190002]
+);
+
+/* Run: ps aux --sort -rss */
+const transition_160003 = new Transition(
+    160002,
+    'ps --sort',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
+
+    [You] how about \`ps aux --sort -rss | head\` 
+    [You] that should show what's using the most memory 
+    [You] anything strange at the top? 
+[Godfrey] I'll check.
+     ...
+[Godfrey] Good shout!
+[Godfrey] It looks like there were hundreds of old build processes running.
+[Godfrey] I've cleaned them all up now, and it looks like there's more memory free:
+            > $ free -m
+            >                total        used        free      shared  buff/cache   available
+            > Mem:           31526        8233       21518        1719        3928       23293
+            > Swap:          32767           1       32766
+[Godfrey] Do you think I need to do anything else?
+
+
+> How do you respond?`,
+    172,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100610, transition_190002]
+);
+
+/*  */
+const transition_160002 = new Transition(
+    160002,
+    'free -m',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
+
+    [You] you could try running \`free -h\` 
+    [You] that should show you how much memory is free 
+[Godfrey] Alright, I'll see what it says.
+     ...
+[Godfrey] Here's the result:
+            > $ free -h
+            >                total        used        free      shared  buff/cache   available
+            > Mem:            30Gi        28Gi       180Mi       1.6Gi       4.6Gi       2.7Gi
+            > Swap:           31Gi          0B        31Gi
+
+
+> How do you respond?`,
+    222,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_160003]
+);
+
+/*  */
+const transition_160001 = new Transition(
+    160001,
+    'ps aux',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
+
+    [You] you could try running \`ps aux\` to see what's running 
+    [You] there's no build in progress at the moment 
+    [You] so look for anything that looks out of place 
+[Godfrey] Will do.
+[Godfrey] 1 second...
+     ...
+[Godfrey] Okay, I ran it.
+[Godfrey] It looks like there were hundreds of old build processes running.
+[Godfrey] I've cleaned them all up now, but how can I check if it helped?
+
+> How do you respond?`,
+    211,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_160004]
+);
+
+/* *hacker voice* I'm in... */
+const transition_160000 = new Transition(
+    160000,
+    'SSH',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
+
+    [You] the build process shouldn't be using much memory
+    [You] let's go have a look at what's going on the box
+    [You] maybe there's something wrong with the machine itself
+[Godfrey] Good idea.
+[Godfrey] I'll ssh into the build host now.
+[Godfrey] Once I've logged in, what kind of think should I be looking for?
+
+
+> How do you respond?`,
+    182,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_160001, transition_160002]
+);
+
 // 15xxxx: Mid-point
 
 /* Big fish, little fish, cardboard box */
@@ -70,7 +242,7 @@ const transition_150310 = new Transition(
     [You] have you tried searching for the error online?
 [Godfrey] No.
 [Godfrey] I'll give that a go now.
-...
+      ...
 [Godfrey] I found a post on the Buffer Underflow forums with a similar error.
 [Godfrey] Apparently exit 137 can be caused by an Out of Memory error
 
@@ -78,7 +250,7 @@ const transition_150310 = new Transition(
 > How do you respond?`,
     231,
     NOTHING_SPECIAL_HAPPENS,
-    []
+    [transition_160000]
 );
 
 /* Big fish, little fish, cardboard box */
@@ -172,6 +344,31 @@ const transition_150200 = new Transition(
 
 // 1003xx: Re-run
 
+/* A way to pass the time */
+const transition_100303 = new Transition(
+    100303,
+    'Investigate',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
+
+    [You] whilst we wait, why don't we have a look at the failure
+    [You] do you have the error from the previous run?
+[Godfrey] Yes, it mostly seemed fine up until the very end.
+[Godfrey] The last few lines just look like this:
+              > Building application... (eta: 25s)
+              > [1]    172896 killed     fancy-build-script.sh
+              > Job failed (exit=137)
+[Godfrey] I don't really know what that means.
+      ...
+[Godfrey] Oh, hey, the new run finished. 
+[Godfrey] Looks as though it passed this time! 
+
+
+> How do you respond?`,
+    101,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_190001, transition_150301]
+);
+
 /* Patience is a virtue */
 const transition_100302 = new Transition(
     100302,
@@ -180,7 +377,7 @@ const transition_100302 = new Transition(
 
     [You] let's just wait for the run to finish
 [Godfrey] Sure, I'll keep an eye on it.
-...
+      ...
 [Godfrey] Hey, the job completed!
 [Godfrey] Oh no...
 [Godfrey] It failed again!
@@ -200,7 +397,7 @@ const transition_100301 = new Transition(
 
     [You] let's just wait for the run to finish
 [Godfrey] Sure, I'll keep an eye on it.
-...
+      ...
 [Godfrey] Hey, the job completed!
 [Godfrey] Looks like it passed this time?
 
@@ -211,7 +408,7 @@ const transition_100301 = new Transition(
     [transition_190001, transition_150301]
 );
 
-/* Run it again, Sam */
+/* Have I ever told you the definition of insanity...? */
 const transition_100300 = new Transition(
     100300,
     'Run it again',
@@ -230,7 +427,7 @@ const transition_100300 = new Transition(
     (state) => {
         state.rerun('commit')
     },
-    [transition_100301]
+    [transition_100301, transition_100303]
 );
 
 // 1002xx: Investigate the failure
@@ -243,7 +440,7 @@ const transition_100210 = new Transition(
 
     [You] we should revert the commit first, just in case
 [Godfrey] Okay, I'll do that now!
-...
+      ...
 [Godfrey] Done - it took a while because it was my first commit of the day.
 [Godfrey] The revert should be landing in CI any moment.
 [Godfrey] What next?
@@ -335,7 +532,7 @@ const transition_100120 = new Transition(
     [You] yes
     [You] there's no need to worry, he can always reapply it later
 [Godfrey] Okay, I'll do that now!
-...
+      ...
 [Godfrey] Done - it took a while because it was my first commit of the day.
 [Godfrey] The revert should be landing in CI any moment.
 [Godfrey] What next?
@@ -359,7 +556,7 @@ const transition_100113 = new Transition(
     [You] just revert him
     [You] no point wasting any time
 [Godfrey] Okay, I'll do that now!
-...
+      ...
 [Godfrey] Done - it took a while because it was my first commit of the day.
 [Godfrey] The revert should be landing in CI any moment.
 [Godfrey] What next?
@@ -383,7 +580,7 @@ const transition_100112 = new Transition(
     [You] you could ask him to revert
     [You] he can always reapply the commit later
 [Godfrey] Okay, I'll ask him!
-...
+      ...
 [Godfrey] He was a bit reluctant, but eventually he agreed.
 [Godfrey] His revert should be landing in CI any moment.
 [Godfrey] What next?
