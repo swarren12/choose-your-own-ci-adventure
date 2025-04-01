@@ -753,7 +753,7 @@ The build history shows the following runs:
 
 /* No tests, only pushes */
 const transition_100126 = new Transition(
-    100125,
+    100126,
     'Push the reverts',
     `"All justice is best served swiftly".                                  ⠀⠀⠀⠀⠀⠀⠀⢀⡠⠤⠄⠀⠒⠂⢀⡤⠤⢀⡀⠀⠀⠀⠀⠀⠀⠀
 The Sheriff wastes no more time.                                       ⠀⠀⠀⠀⡀⠔⢈⠀⠀⡿⠀⢀⣤⡄⠈⠋⢁⣀⠀⢈⡒⢄⠀⠀⠀⠀
@@ -780,7 +780,7 @@ They think they've earned it.                                          ⠀⠸⡐
 
 /* Measure twice, cut once */
 const transition_100125 = new Transition(
-    100123,
+    100125,
     'Run the failing tests',
     `The Sheriff remembers what their uncle once told them: "With great power comes great responsibility".
 They are confident that their revert will help.
@@ -846,7 +846,7 @@ All the tests passed, just like they expected.
 > What will the Sheriff do next?`,
     250,
     NOTHING_SPECIAL_HAPPENS,
-    [transition_100125]
+    [transition_100124]
 );
 
 /* No tests, only pushes */
@@ -888,7 +888,7 @@ Not only will it tell others why the change was reverted, it will also help trac
 > What will the Sheriff do next?`,
     111,
     NOTHING_SPECIAL_HAPPENS,
-    [transition_100125, transition_100123]
+    [transition_100125, transition_100124]
 );
 
 /* Revert, for the sake of yoghurt lovers everywhere... */
@@ -962,8 +962,8 @@ They review the changes:
 );
 
 /* Error message in a bottle */
-const transition_100106 = new Transition(
-    100106,
+const transition_100116 = new Transition(
+    100116,
     'Look at failures',
     `The Sheriff clicks the link to view the test failure details.
 
@@ -999,6 +999,86 @@ The plot thickens, like milk turning into yoghurt.
     67,
     NOTHING_SPECIAL_HAPPENS,
     [transition_100121, transition_100120]
+);
+
+/* Revert first? */
+const transition_100115 = new Transition(
+    100115,
+    'Revert',
+    `The Sheriff smiles.
+They can see a case coming together.
+There are still many questions to answer, but those can wait.
+What is needed now is action.
+
+The Sheriff's smile turns to a frown.
+A new thought has occurred to them.
+Up until now they had thought this the work of a solo operator.
+A one-man job.
+But what if...
+
+Three jobs.
+Three changes.
+Three suspects.
+
+What if they were all in on it together?
+
+The Sheriff ponders this.
+It occurs to them that they're still not sure what is actually broken.
+Without that information there would be no way to rule out any of the suspects.
+
+
+> How should the Sheriff proceed?`,
+    72,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100116, transition_100120]
+);
+
+/* Sometimes it helps to take a step back */
+const transition_100110 = new Transition(
+    100104,
+    'Investigate previous build',
+    `The Sheriff pulls up the build details for the previous run.
+
+The build details show that there were three changes in this run:
+
+- "Fix spelling of Charcuterie" <charlesb@example.co>
+- "Add extra verification step for withdrawing yoghurt" <terryj@example.co>
+- "Avoid unnecessary work" <norms@example.co>
+
+Underneath, there is a link to the details of the test failures.
+
+The Sheriff furrows their brow.
+Three jobs.
+Three changes.
+Three suspects.
+
+Was this a coincidence?
+Almost certainly.
+
+
+> What should the Sheriff do now?`,
+    80,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100115, transition_100116]
+);
+
+/* The heart wants what the heart wants */
+const transition_100108 = new Transition(
+    100108,
+    'Revert',
+    `There is no doubt in the mind of the Sheriff - something is broken.
+But the question is: what can they do about it?
+They know there is only one answer to this question: revert.
+
+But, a snag.
+There were no changes in the latest run.
+No changes, mean nothing to revert.
+
+
+> What should the Sheriff do now?`,
+    67,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100110]
 );
 
 /* Danger, Will Robinson. Danger! */
@@ -1038,68 +1118,7 @@ The plot thickens, like milk turning into yoghurt.
 > What should the Sheriff do now?`,
     67,
     NOTHING_SPECIAL_HAPPENS,
-    [] // TODO -> transition to "Revert", but will need to work out what?
-);
-
-/* Revert first? */
-const transition_100105 = new Transition(
-    100105,
-    'Revert',
-    `The Sheriff smiles.
-They can see a case coming together.
-There are still many questions to answer, but those can wait.
-What is needed now is action.
-
-The Sheriff's smile turns to a frown.
-A new thought has occurred to them.
-Up until now they had thought this the work of a solo operator.
-A one-man job.
-But what if...
-
-Three jobs.
-Three changes.
-Three suspects.
-
-What if they were all in on it together?
-
-The Sheriff ponders this.
-It occurs to them that they're still not sure what is actually broken.
-Without that information there would be no way to rule out any of the suspects.
-
-
-> How should the Sheriff proceed?`,
-    72,
-    NOTHING_SPECIAL_HAPPENS,
-    [transition_100106, transition_100120]
-);
-
-/* Sometimes it helps to take a step back */
-const transition_100104 = new Transition(
-    100104,
-    'Investigate previous build',
-    `The Sheriff pulls up the build details for the previous run.
-
-The build details show that there were three changes in this run:
-
-- "Fix spelling of Charcuterie" <charlesb@example.co>
-- "Add extra verification step for withdrawing yoghurt" <terryj@example.co>
-- "Avoid unnecessary work" <norms@example.co>
-
-Underneath, there is a link to the details of the test failures.
-
-The Sheriff furrows their brow.
-Three jobs.
-Three changes.
-Three suspects.
-
-Was this a coincidence?
-Almost certainly.
-
-
-> What should the Sheriff do now?`,
-    80,
-    NOTHING_SPECIAL_HAPPENS,
-    [transition_100105, transition_100106]
+    [transition_100108]
 );
 
 /* I'm late, I'm late! */
@@ -1116,7 +1135,7 @@ Underneath, there is a link to the details of the test failures.
 > What should the Sheriff do now?`,
     67,
     NOTHING_SPECIAL_HAPPENS,
-    [transition_100104, transition_100107]
+    [transition_100110, transition_100107]
 );
 
 /* Out with the old... */
@@ -1145,7 +1164,7 @@ Almost certainly.
 > What should the Sheriff do now?`,
     97,
     NOTHING_SPECIAL_HAPPENS,
-    [transition_100105, transition_100106]
+    [transition_100115, transition_100116]
 );
 
 /* ... in with the new */
@@ -1166,7 +1185,7 @@ The build history shows the following runs:
 > What should the Sheriff do now?`,
     615,
     NOTHING_SPECIAL_HAPPENS,
-    [transition_100103, transition_100104]
+    [transition_100103, transition_100110]
 );
 
 /* Your mission, if you chose to accept it... */
