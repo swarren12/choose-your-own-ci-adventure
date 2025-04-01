@@ -11,18 +11,13 @@ const BEGIN = new Date(2025, 4, 1, 9, 13, 1);
 
 // Jobs
 
-const job_commit = new Job('commit', 120/*, ['acceptance', 'integration', 'analysis']*/);
-// const job_acceptance = new Job('acceptance', 1155);
-// const job_integration = new Job('integration', 544);
-// const job_analysis = new Job('analysis', 182);
-
-const jobs = [job_commit/*, job_acceptance, job_integration, job_analysis*/];
+const job_commit = new Job('commit', 120);
+const jobs = [job_commit];
 
 // Commits
 
-const commit1 = new Commit('Re-implement processing logic to be easier to extend', 'person1@example.co');
-const commit2 = new Commit('Update tolerance threshold from 10 to 15', 'person2@example.co');
-const commit3 = new Commit('Make approval required for high-value transactions', 'person1@example.co');
+const commit1 = new Commit('Re-implement processing logic to be easier to extend', 'jeff@example.co');
+const commit2 = new Commit('Update tolerance threshold from 10 to 15', 'geoff@example.co');
 const commits = [];
 
 job_commit.add_build([commit1], JobStatus.PASS, MUCH_EARLIER, 100, 0);
@@ -40,11 +35,11 @@ const state = new WorldState(jobs, commits, BEGIN);
 const transition_190001 = new Transition(
     190001,
     'Job done!',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] cool
-      [You] let me know if you have any other problems
-[Colleague] Thanks for the help!`,
+    [You] cool
+    [You] let me know if you have any other problems
+[Godfrey] Thanks for the help!`,
     5,
     NOTHING_SPECIAL_HAPPENS,
     []
@@ -54,11 +49,11 @@ const transition_190001 = new Transition(
 const transition_190000 = new Transition(
     190000,
     'Sorry...',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] sorry, the person you are calling is currently unavailable
-      [You] to leave a message, press 11
-[Colleague] ...`,
+    [You] sorry, the person you are calling is currently unavailable
+    [You] to leave a message, press 11
+[Godfrey] ...`,
     0,
     NOTHING_SPECIAL_HAPPENS,
     []
@@ -70,14 +65,14 @@ const transition_190000 = new Transition(
 const transition_150310 = new Transition(
     150310,
     'LMGTFY',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] have you tried searching for the error online?
-[Colleague] No.
-[Colleague] I'll give that a go now.
+    [You] have you tried searching for the error online?
+[Godfrey] No.
+[Godfrey] I'll give that a go now.
 ...
-[Colleague] I found a post on the Buffer Underflow forums with a similar error.
-[Colleague] Apparently exit 137 can be caused by an Out of Memory error
+[Godfrey] I found a post on the Buffer Underflow forums with a similar error.
+[Godfrey] Apparently exit 137 can be caused by an Out of Memory error
 
 
 > How do you respond?`,
@@ -90,15 +85,15 @@ const transition_150310 = new Transition(
 const transition_150302 = new Transition(
     150302,
     '...',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] "Reacher said nothing"
-[Colleague] Huh?
-[Colleague] What?
-      [You] nevermind
-      [You] maybe there's some way we can get some more information on that error?
-[Colleague] Oh, you mean...
-      [You] ...
+    [You] "Reacher said nothing"
+[Godfrey] Huh?
+[Godfrey] What?
+    [You] nevermind
+    [You] maybe there's some way we can get some more information on that error?
+[Godfrey] Oh, you mean...
+    [You] ...
 
 
 > How do you respond?`,
@@ -111,17 +106,17 @@ const transition_150302 = new Transition(
 const transition_150301 = new Transition(
     150300,
     'Investigate',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] even though it passed the second time, maybe we should look into it more
-      [You] do you have the error from the failed run?
-[Colleague] Yes, I think I sent it to you earlier.
-[Colleague] Maybe I didn't...
-[Colleague] Anyway, here it is:
+    [You] even though it passed the second time, maybe we should look into it more
+    [You] do you have the error from the failed run?
+[Godfrey] Yes, I think I sent it to you earlier.
+[Godfrey] Maybe I didn't...
+[Godfrey] Anyway, here it is:
               > Building application... (eta: 25s)
               > [1]    172896 killed     fancy-build-script.sh
               > Job failed (exit=137)
-[Colleague] I'm not really sure what's going on there.
+[Godfrey] I'm not really sure what's going on there.
 
 
 > How do you respond?`,
@@ -134,18 +129,18 @@ const transition_150301 = new Transition(
 const transition_150300 = new Transition(
     150300,
     'Investigate',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] we should have a look at the failure
-      [You] do you have the error from the latest run?
-[Colleague] Yes.
-[Colleague] I checked and it's the same in both runs, only the "eta" changes.
-[Colleague] Here's the end of the last run:
+    [You] we should have a look at the failure
+    [You] do you have the error from the latest run?
+[Godfrey] Yes.
+[Godfrey] I checked and it's the same in both runs, only the "eta" changes.
+[Godfrey] Here's the end of the last run:
               > Building application... (eta: 25s)
               > Building application... (eta: 20s)
               > [1]    180147 killed     fancy-build-script.sh
               > Job failed (exit=137)
-[Colleague] I'm not really sure what's going on there.
+[Godfrey] I'm not really sure what's going on there.
 
 
 > How do you respond?`,
@@ -158,15 +153,15 @@ const transition_150300 = new Transition(
 const transition_150200 = new Transition(
     150200,
     '🤔',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] hmm
-      [You] interesting
-[Colleague] ?
-      [You] we should probably ask people not to push any more changes for the time being
-[Colleague] Good idea.
-[Colleague] I'll let everyone else know!
-[Colleague] But how do we fix it?
+    [You] hmm
+    [You] interesting
+[Godfrey] ?
+    [You] we should probably ask people not to push any more changes for the time being
+[Godfrey] Good idea.
+[Godfrey] I'll let everyone else know!
+[Godfrey] But how do we fix it?
 
 
 > How do you respond?`,
@@ -181,14 +176,14 @@ const transition_150200 = new Transition(
 const transition_100302 = new Transition(
     100302,
     'Just wait',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] let's just wait for the run to finish
-[Colleague] Sure, I'll keep an eye on it.
+    [You] let's just wait for the run to finish
+[Godfrey] Sure, I'll keep an eye on it.
 ...
-[Colleague] Hey, the job completed!
-[Colleague] Oh no...
-[Colleague] It failed again!
+[Godfrey] Hey, the job completed!
+[Godfrey] Oh no...
+[Godfrey] It failed again!
 
 
 > How do you respond?`,
@@ -201,13 +196,13 @@ const transition_100302 = new Transition(
 const transition_100301 = new Transition(
     100301,
     'Just wait',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] let's just wait for the run to finish
-[Colleague] Sure, I'll keep an eye on it.
+    [You] let's just wait for the run to finish
+[Godfrey] Sure, I'll keep an eye on it.
 ...
-[Colleague] Hey, the job completed!
-[Colleague] Looks like it passed this time?
+[Godfrey] Hey, the job completed!
+[Godfrey] Looks like it passed this time?
 
 
 > How do you respond?`,
@@ -220,14 +215,14 @@ const transition_100301 = new Transition(
 const transition_100300 = new Transition(
     100300,
     'Run it again',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] how many times has it failed?
-[Colleague] Just once.
-      [You] maybe we should run it again, and see if it fails again
-[Colleague] Good idea!
-[Colleague] I'll kick off a new run now.
-[Colleague] Do we need to do anything else?
+    [You] how many times has it failed?
+[Godfrey] Just once.
+    [You] maybe we should run it again, and see if it fails again
+[Godfrey] Good idea!
+[Godfrey] I'll kick off a new run now.
+[Godfrey] Do we need to do anything else?
 
 
 > How do you respond?`,
@@ -244,20 +239,20 @@ const transition_100300 = new Transition(
 const transition_100210 = new Transition(
     100210,
     'Speculative revert',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] we should revert the commit first, just in case
-[Colleague] Okay, I'll do that now!
+    [You] we should revert the commit first, just in case
+[Godfrey] Okay, I'll do that now!
 ...
-[Colleague] Done - it took a while because it was my first commit of the day.
-[Colleague] The revert should be landing in CI any moment.
-[Colleague] What next?
+[Godfrey] Done - it took a while because it was my first commit of the day.
+[Godfrey] The revert should be landing in CI any moment.
+[Godfrey] What next?
 
 
 > How do you respond?`,
     311,
     (state) => {
-        const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'colleague@example.co');
+        const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'godfrey@example.co');
         revert.expect_failures("commit", -1);
     },
     [transition_100302]
@@ -267,18 +262,18 @@ const transition_100210 = new Transition(
 const transition_100200 = new Transition(
     100200,
     'Investigate',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] maybe we should look at what went wrong
-      [You] it doesn't look like any tests failed
-[Colleague] I had a look in the job log but I couldn't find anything obvious.
-[Colleague] The last few lines just look like this:
+    [You] maybe we should look at what went wrong
+    [You] it doesn't look like any tests failed
+[Godfrey] I had a look in the job log but I couldn't find anything obvious.
+[Godfrey] The last few lines just look like this:
               > Building application... (eta: 25s)
               > [1]    172896 killed     fancy-build-script.sh
               > Job failed (exit=137)
-[Colleague] That doesn't seem very helpful.
-      [You] you're right, that message doesn't tell us very much
-[Colleague] Is there any way we can get more information?
+[Godfrey] That doesn't seem very helpful.
+    [You] you're right, that message doesn't tell us very much
+[Godfrey] Is there any way we can get more information?
 
 
 > How do you respond?`,
@@ -291,18 +286,18 @@ const transition_100200 = new Transition(
 const transition_100201 = new Transition(
     100201,
     'Investigate',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] whilst we wait, maybe we should look at what went wrong
-      [You] it doesn't look like any tests failed
-[Colleague] I had a look in the job log but I couldn't find anything obvious.
-[Colleague] The last few lines just look like this:
+    [You] whilst we wait, maybe we should look at what went wrong
+    [You] it doesn't look like any tests failed
+[Godfrey] I had a look in the job log but I couldn't find anything obvious.
+[Godfrey] The last few lines just look like this:
               > Building application... (eta: 25s)
               > [1]    172896 killed     fancy-build-script.sh
               > Job failed (exit=137)
-[Colleague] That doesn't seem very helpful.
-      [You] you're right, that message doesn't tell us very much
-[Colleague] Is there any way we can get more information?
+[Godfrey] That doesn't seem very helpful.
+    [You] you're right, that message doesn't tell us very much
+[Godfrey] Is there any way we can get more information?
 
 
 > How do you respond?`,
@@ -317,13 +312,13 @@ const transition_100201 = new Transition(
 const transition_100121 = new Transition(
     100121,
     'Actually...',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] maybe we shouldn't be so hasty
-      [You] there's a few other things we could do first
-[Colleague] Oh!
-[Colleague] Like what?
-      [You] well...
+    [You] maybe we shouldn't be so hasty
+    [You] there's a few other things we could do first
+[Godfrey] Oh!
+[Godfrey] Like what?
+    [You] well...
 
 > How do you respond?`,
     72,
@@ -335,21 +330,21 @@ const transition_100121 = new Transition(
 const transition_100120 = new Transition(
     100120,
     'Yes',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] yes
-      [You] there's no need to worry, they can always reapply it later
-[Colleague] Okay, I'll do that now!
+    [You] yes
+    [You] there's no need to worry, he can always reapply it later
+[Godfrey] Okay, I'll do that now!
 ...
-[Colleague] Done - it took a while because it was my first commit of the day.
-[Colleague] The revert should be landing in CI any moment.
-[Colleague] What next?
+[Godfrey] Done - it took a while because it was my first commit of the day.
+[Godfrey] The revert should be landing in CI any moment.
+[Godfrey] What next?
 
 
 > How do you respond?`,
     311,
     (state) => {
-        const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'colleague@example.co');
+        const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'godfrey@example.co');
         revert.expect_failures("commit", -1);
     },
     [transition_100302, transition_100201]
@@ -359,21 +354,21 @@ const transition_100120 = new Transition(
 const transition_100113 = new Transition(
     100113,
     'Revert them yourself',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] just revert them
-      [You] no point wasting any time
-[Colleague] Okay, I'll do that now!
+    [You] just revert him
+    [You] no point wasting any time
+[Godfrey] Okay, I'll do that now!
 ...
-[Colleague] Done - it took a while because it was my first commit of the day.
-[Colleague] The revert should be landing in CI any moment.
-[Colleague] What next?
+[Godfrey] Done - it took a while because it was my first commit of the day.
+[Godfrey] The revert should be landing in CI any moment.
+[Godfrey] What next?
 
 
 > How do you respond?`,
     311,
     (state) => {
-        const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'colleague@example.co');
+        const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'godfrey@example.co');
         revert.expect_failures("commit", -1);
     },
     [transition_100302]
@@ -383,21 +378,21 @@ const transition_100113 = new Transition(
 const transition_100112 = new Transition(
     100112,
     'Ask them to revert',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] you could ask them to revert
-      [You] they can always reapply the commit later
-[Colleague] Okay! I'll ask them
+    [You] you could ask him to revert
+    [You] he can always reapply the commit later
+[Godfrey] Okay, I'll ask him!
 ...
-[Colleague] They were a bit reluctant, but eventually they agreed.
-[Colleague] Their revert should be landing in CI any moment.
-[Colleague] What next?
+[Godfrey] He was a bit reluctant, but eventually he agreed.
+[Godfrey] His revert should be landing in CI any moment.
+[Godfrey] What next?
 
 
 > How do you respond?`,
     153,
     (state) => {
-        const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'person2@example.co');
+        const revert = state.commit('Revert "Update tolerance threshold from 10 to 15"', 'geoff@example.co');
         revert.expect_failures("commit", -1);
     },
     [transition_100302, transition_100201]
@@ -407,10 +402,10 @@ const transition_100112 = new Transition(
 const transition_100111 = new Transition(
     100111,
     'Revert anyway',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] even so, we should revert it anyway, just to be sure
-[Colleague] Should I ask them to, or should I just do it myself?
+    [You] even so, we should revert it anyway, just to be sure
+[Godfrey] Should I ask him to, or should I just do it myself?
 
 
 > How do you respond?`,
@@ -422,14 +417,14 @@ const transition_100111 = new Transition(
 /* Talkin' 'bout my generation */
 const transition_100110 = new Transition(
     100110,
-    'Check with the commit author',
-    `--- Conversation started @ 09:13 ---
+    'Check with Geoff',
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] have you asked the author of that commit about it?
-[Colleague] I did.
-[Colleague] They said that the commit worked fine on their machine.
-[Colleague] The failure must be something else.
-      [You] could be, but still...
+    [You] have you asked Geoff about it?
+[Godfrey] I did.
+[Godfrey] He said that the commit worked fine on his machine.
+[Godfrey] The failure must be something else.
+    [You] could be, but still...
 
 
 > How do you respond?`,
@@ -442,12 +437,12 @@ const transition_100110 = new Transition(
 const transition_100101 = new Transition(
     100101,
     'Revert first...',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] there's only one change in that build, right?
-[Colleague] Yes, but as I said, it doesn't look like it would break anything.
-      [You] remember the golden rule of CI: "Revert first, ask questions later"
-[Colleague] So I should revert the commit?
+    [You] there's only one change in that build, right?
+[Godfrey] Yes, but as I said, it doesn't look like it would break anything.
+    [You] remember the golden rule of CI: "Revert first, ask questions later"
+[Godfrey] So I should revert the commit?
 
 
 > How do you respond?`,
@@ -460,17 +455,19 @@ const transition_100101 = new Transition(
 const transition_100100 = new Transition(
     100100,
     'How can I help you?',
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 (cont...) ---
 
-      [You] sure
-      [You] what's up?
-[Colleague] It's my turn to look after CI, but it seems broken.
-[Colleague] I don't really understand what's going on.
-[Colleague] I was hoping you'd be able to help me.
-      [You] what do you mean "seems broken"?
-[Colleague] The \`commit\` build failed but I can't work out why... 
-[Colleague] There's only one change in the last build, but it doesn't sound like it would break anything
-              > "Update tolerance threshold from 10 to 15 <person2@example.co>"
+    [You] sure
+    [You] what's up?
+[Godfrey] It's my turn to look after CI, but it seems broken.
+[Godfrey] I don't really understand what's going on.
+[Godfrey] I was hoping you'd be able to help me.
+    [You] what do you mean "seems broken"?
+[Godfrey] The \`commit\` build failed but I can't work out why... 
+[Godfrey] There's only one change in the last build, but it doesn't sound like it would break anything
+              > "Update tolerance threshold from 10 to 15" 
+              > 
+              > 7c850a24 Geoff <geoff@example.co> on 01/04/2025 at 08:43:17
 
 
 > How do you respond?`,
@@ -486,11 +483,11 @@ const scenario = new Scenario(
     'LFG!',
     Scenario3,
     state,
-    `--- Conversation started @ 09:13 ---
+    `--- Chat with Godfrey @ 09:13 ---
 
-[Colleague] Hey, good morning!
-      [You] good morning
-[Colleague] Sorry to bother you so early, but I need your help with something.
+[Godfrey] Hey, good morning!
+    [You] good morning
+[Godfrey] Sorry to bother you so early, but I need your help with something.
 
 
 > How do you respond?`,
