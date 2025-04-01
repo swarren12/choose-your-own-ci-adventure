@@ -38,9 +38,165 @@ const state = new WorldState(jobs, commits, BEGIN);
 
 // 1003xx: Analysis
 
+/* It's my party and I'll cry if I want to */
+const transition_100352 = new Transition(
+    100352,
+    'Push the fix',
+    `
+"Case closed"                                                          ⠀⠀⠀⠀⠀⠀⠀⢀⡠⠤⠄⠀⠒⠂⢀⡤⠤⢀⡀⠀⠀⠀⠀⠀⠀⠀
+The Sheriff wastes no time.                                            ⠀⠀⠀⠀⡀⠔⢈⠀⠀⡿⠀⢀⣤⡄⠈⠋⢁⣀⠀⢈⡒⢄⠀⠀⠀⠀
+They push the fix, making sure to run the pre-commit checks first.     ⠀⠀⣠⠊⣁⡀⠉⠋⠀⣦⠀⠀⠁⢀⠀⠀⠀⠛⠀⠘⠃⣄⠑⢄⠀⠀
+                                                                       ⠀⡔⡁⠀⠉⢁⣄⠄⠀⠈⠀⣶⠀⠈⠛⠀⣠⠄⠶⠦⠀⠑⠀⢬⣧⠀
+The Sheriff sits back in their chair.                                  ⡐⠀⠿⢠⢄⠀⣀⠀⠀⡠⠄⠠⠔⠉⠢⡀⠉⠀⠀⢀⣴⠆⠀⠈⠁⢣
+It'll be a while until the change makes it through the various jobs.   ⠃⣤⠄⠀⢁⣄⠙⠀⠘⠀⡠⠒⠉⠉⠒⢄⠉⢢⠀⠀⢀⡀⠟⠃⢴⡤
+They'll check on it later.                                             ⡀⠀⢔⡀⠈⠋⠠⢄⠰⡜⠀⠀⠀⠀⠀⠀⠱⡜⢠⡤⠈⠛⠁⢀⣄⢀
+                                                                       ⡇⠀⣀⡀⠀⠀⠀⠉⠀⠘⠢⣀⠀⠀⠀⡠⠊⢀⠈⠀⠀⢸⡄⠈⠁⢸
+For now, there's a doughnut in the fridge with their name on it.       ⠰⡌⠋⠀⠰⣂⠛⠃⠀⢰⣆⠀⠈⣯⡁⢀⡀⠈⠋⠀⣔⠆⠀⠸⢆⡎
+They think they've earned it.                                          ⠀⠸⡐⠂⠤⢀⠀⢶⠀⠀⣈⡀⠀⢈⡅⠈⠘⡁⠀⠶⠅⡀⠠⠒⡙⠀
+                                                                       ⠀⠀⠐⡄⠀⠀⠱⡀⠀⠀⠉⢁⡠⢏⠁⠀⠚⠁⠀⢠⠊⠀⢀⠜⠀⠀
+                                                                       ⠀⠀⠀⠈⠢⠀⠀⠈⠒⠀⠂⠁⠀⠀⠉⠂⠤⠤⠐⠁⢀⠴⠋⠀⠀⠀
+                                                                       ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
+                                                                       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
+    100,
+    (state) => {
+        state.commit('Correct translations to fix analysis test', 'peraltaj@example.co');
+    },
+    []
+);
+
+/* It's my party and I'll cry if I want to */
+const transition_100351 = new Transition(
+    100351,
+    'Push anyway',
+    `"All justice is best served swiftly".                                  ⠀⠀⠀⠀⠀⠀⠀⢀⡠⠤⠄⠀⠒⠂⢀⡤⠤⢀⡀⠀⠀⠀⠀⠀⠀⠀
+The Sheriff wastes no time.                                            ⠀⠀⠀⠀⡀⠔⢈⠀⠀⡿⠀⢀⣤⡄⠈⠋⢁⣀⠀⢈⡒⢄⠀⠀⠀⠀
+They push the revert, making sure to run the pre-commit checks first.  ⠀⠀⣠⠊⣁⡀⠉⠋⠀⣦⠀⠀⠁⢀⠀⠀⠀⠛⠀⠘⠃⣄⠑⢄⠀⠀
+                                                                       ⠀⡔⡁⠀⠉⢁⣄⠄⠀⠈⠀⣶⠀⠈⠛⠀⣠⠄⠶⠦⠀⠑⠀⢬⣧⠀
+The Sheriff sits back in their chair.                                  ⡐⠀⠿⢠⢄⠀⣀⠀⠀⡠⠄⠠⠔⠉⠢⡀⠉⠀⠀⢀⣴⠆⠀⠈⠁⢣
+It'll be a while until the change makes it through the various jobs.   ⠃⣤⠄⠀⢁⣄⠙⠀⠘⠀⡠⠒⠉⠉⠒⢄⠉⢢⠀⠀⢀⡀⠟⠃⢴⡤
+They'll check on it later.                                             ⡀⠀⢔⡀⠈⠋⠠⢄⠰⡜⠀⠀⠀⠀⠀⠀⠱⡜⢠⡤⠈⠛⠁⢀⣄⢀
+                                                                       ⡇⠀⣀⡀⠀⠀⠀⠉⠀⠘⠢⣀⠀⠀⠀⡠⠊⢀⠈⠀⠀⢸⡄⠈⠁⢸
+For now, there's a doughnut in the fridge with their name on it.       ⠰⡌⠋⠀⠰⣂⠛⠃⠀⢰⣆⠀⠈⣯⡁⢀⡀⠈⠋⠀⣔⠆⠀⠸⢆⡎
+They think they've earned it.                                          ⠀⠸⡐⠂⠤⢀⠀⢶⠀⠀⣈⡀⠀⢈⡅⠈⠘⡁⠀⠶⠅⡀⠠⠒⡙⠀
+                                                                       ⠀⠀⠐⡄⠀⠀⠱⡀⠀⠀⠉⢁⡠⢏⠁⠀⠚⠁⠀⢠⠊⠀⢀⠜⠀⠀
+                                                                       ⠀⠀⠀⠈⠢⠀⠀⠈⠒⠀⠂⠁⠀⠀⠉⠂⠤⠤⠐⠁⢀⠴⠋⠀⠀⠀
+                                                                       ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
+                                                                       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
+    100,
+    (state) => {
+        state.commit('Revert \'Fix spelling of Charcuterie\'', 'peraltaj@example.co');
+    },
+    []
+);
+
+/* No tests, only pushes */
+const transition_100350 = new Transition(
+    100350,
+    'Push the revert',
+    `"All justice is best served swiftly".                                  ⠀⠀⠀⠀⠀⠀⠀⢀⡠⠤⠄⠀⠒⠂⢀⡤⠤⢀⡀⠀⠀⠀⠀⠀⠀⠀
+The Sheriff wastes no time.                                            ⠀⠀⠀⠀⡀⠔⢈⠀⠀⡿⠀⢀⣤⡄⠈⠋⢁⣀⠀⢈⡒⢄⠀⠀⠀⠀
+They push the revert, making sure to run the pre-commit checks first.  ⠀⠀⣠⠊⣁⡀⠉⠋⠀⣦⠀⠀⠁⢀⠀⠀⠀⠛⠀⠘⠃⣄⠑⢄⠀⠀
+                                                                       ⠀⡔⡁⠀⠉⢁⣄⠄⠀⠈⠀⣶⠀⠈⠛⠀⣠⠄⠶⠦⠀⠑⠀⢬⣧⠀
+The Sheriff sits back in their chair.                                  ⡐⠀⠿⢠⢄⠀⣀⠀⠀⡠⠄⠠⠔⠉⠢⡀⠉⠀⠀⢀⣴⠆⠀⠈⠁⢣
+It'll be a while until the change makes it through the various jobs.   ⠃⣤⠄⠀⢁⣄⠙⠀⠘⠀⡠⠒⠉⠉⠒⢄⠉⢢⠀⠀⢀⡀⠟⠃⢴⡤
+They'll check on it later.                                             ⡀⠀⢔⡀⠈⠋⠠⢄⠰⡜⠀⠀⠀⠀⠀⠀⠱⡜⢠⡤⠈⠛⠁⢀⣄⢀
+                                                                       ⡇⠀⣀⡀⠀⠀⠀⠉⠀⠘⠢⣀⠀⠀⠀⡠⠊⢀⠈⠀⠀⢸⡄⠈⠁⢸
+For now, there's a doughnut in the fridge with their name on it.       ⠰⡌⠋⠀⠰⣂⠛⠃⠀⢰⣆⠀⠈⣯⡁⢀⡀⠈⠋⠀⣔⠆⠀⠸⢆⡎
+They think they've earned it.                                          ⠀⠸⡐⠂⠤⢀⠀⢶⠀⠀⣈⡀⠀⢈⡅⠈⠘⡁⠀⠶⠅⡀⠠⠒⡙⠀
+                                                                       ⠀⠀⠐⡄⠀⠀⠱⡀⠀⠀⠉⢁⡠⢏⠁⠀⠚⠁⠀⢠⠊⠀⢀⠜⠀⠀
+                                                                       ⠀⠀⠀⠈⠢⠀⠀⠈⠒⠀⠂⠁⠀⠀⠉⠂⠤⠤⠐⠁⢀⠴⠋⠀⠀⠀
+                                                                       ⠀⠀⠀⠀⠀⠈⠑⠠⢄⡀⠀⠀⠀⠀⠀⠀⣀⡠⠄⠂⠁⠀⠀⠀⠀⠀
+                                                                       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠉`,
+    100,
+    (state) => {
+        state.commit('Revert \'Fix spelling of Charcuterie\'', 'peraltaj@example.co');
+    },
+    []
+);
+
+/* We have the technology */
+const transition_100346 = new Transition(
+    100346,
+    'Run the failing test',
+    `The Sheriff's brow glistens with a thin layer of sweat.
+They're entering unfamiliar territory here.
+It's one thing to investigate failures, but fixing them?
+
+But the Sheriff knows that they have a secret weapon.
+Something that will give them confidence.
+Something that will prove them right.
+
+They have the tests.
+
+It takes longer for the Sheriff to hit run than for the test to complete. 
+And with that, it's over.
+The test is green.
+
+    
+> What will the Sheriff do next?`,
+    85,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100352]
+);
+
+/* We can fix him */
+const transition_100345 = new Transition(
+    100345,
+    'Attempt to fix',
+    ``,
+    192,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100346, transition_100350]
+);
+
+/* Measure twice, cut once */
+const transition_100343 = new Transition(
+    100343,
+    'Run the failing test',
+    `The Sheriff remembers what their uncle once told them: "With great power comes great responsibility".
+They are confident that their revert will help.
+Confident, but not arrogant.
+
+They decide to verify this.
+
+Luckily, they can run the failing test locally.
+One test.
+No set up.
+It takes longer for the Sheriff to hit run than for the test to complete. 
+
+The Sheriff's smile grows a little wider.
+Green, just like they expected.
+
+    
+> What will the Sheriff do next?`,
+    85,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100350]
+);
+
+/* Revert first? */
+const transition_100342 = new Transition(
+    100342,
+    'Revert',
+    `The Sheriff eyes the screen in front of them.
+It was almost too easy.
+They had a crime scene, bathed in a blood red crimson.
+They had a suspect, a singular change standing alone amid chaos and destruction.
+An open and shut case.
+
+The Sheriff opens a terminal and enters a command.
+A few seconds late, the change has been reverted.
+
+
+> How should the Sheriff proceed?`,
+    72,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100343, transition_100350]
+);
+
 /* Error message in a bottle */
-const transition_100304 = new Transition(
-    100306,
+const transition_100341 = new Transition(
+    100341,
     'Look at failures',
     `The Sheriff clicks the link to view the test failure details.
 
@@ -52,9 +208,9 @@ The Sheriff scrutinises the failure message:
 --------------------------------------------------------------
 1) allFrontEndTextMustHaveGaelicTranslations() (co.example.tests.analysis.GaelicTranslationTest)
 co.example.tests.analysis.MissingTranslationException: No translation found for:
-  - ""
-  - ""
-  - ""
+  - "Order Charcuterie"
+  - "Cancel Charcuterie order"
+  - "Track Charcuterie order"
         at co.example.tests.integration.fridge.FridgeIntegrationTest.shouldBeAbleToWithdrawYoghurt(FridgeIntegrationTest.java:17)
 ...
 --------------------------------------------------------------
@@ -65,25 +221,172 @@ The plot thickens, like milk turning into yoghurt.
 > What should the Sheriff do now?`,
     67,
     NOTHING_SPECIAL_HAPPENS,
-    [/*transition_100321, transition_100320*/]
+    [transition_100342, transition_100345]
 );
 
-/* Revert first? */
-const transition_100303 = new Transition(
-    100305,
-    'Revert',
+/* Out with the old... */
+const transition_100340 = new Transition(
+    100340,
+    'Investigate previous build',
+    `The Sheriff pulls up the build details for first failed run.
+
+The build details show that there was one change in this run:
+
+- "Fix spelling of Charcuterie" <charlesb@example.co>
+
+Underneath, there is a link to the details of the test failures.
+
+
+> What should the Sheriff do now?`,
+    75,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100342, transition_100341]
+);
+
+/* I've made a terrible mistake */
+const transition_100335 = new Transition(
+    100335,
+    'Investigate previous build',
+    `The Sheriff thinks about the scene in front of them.
+A thought occurs to them.
+
+They've been a fool.
+They've been looking at this all wrong.
+They've been focusing on the wrong run.
+
+They had been blinded by the red of the current run.
+Red, like a herring.
+But no longer.
+
+There was another run - an earlier run.
+
+The Sheriff pulls up the build details for previous run.
+
+The build details show that there was one change in this run:
+
+- "Fix spelling of Charcuterie" <charlesb@example.co>
+
+Underneath, there is a link to the details of the test failures.
+
+
+> What should the Sheriff do now?`,
+    74,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100340]
+);
+
+/* Measure twice, cut once */
+const transition_100333 = new Transition(
+    100333,
+    'Run the failing test',
+    `The Sheriff remembers what their uncle once told them: "With great power comes great responsibility".
+They are confident that their revert will help.
+Confident, but not arrogant.
+
+They decide to verify this.
+
+Luckily, they can run the failing test locally.
+One test.
+No set up.
+It takes longer for the Sheriff to hit run than for the test to complete. 
+
+The Sheriff's smile fades.
+They stare at the screen in disbelief.
+Red.
+
+    
+> What will the Sheriff do next?`,
+    85,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100351]
+);
+
+/* 'Till all are one */
+const transition_100331 = new Transition(
+    100331,
+    'Revert one',
     `
 
 
 > How should the Sheriff proceed?`,
     72,
     NOTHING_SPECIAL_HAPPENS,
-    [/*transition_100306, transition_100320*/]
+    [transition_100333, transition_100350]
+);
+
+/* Two's company */
+const transition_100330 = new Transition(
+    100330,
+    'Revert both',
+    `The Sheriff clenches their jaw.
+There's only one thing for it.
+Desperate times call for desperate measures.
+
+The Sheriff opens a terminal and enters a command.
+A few seconds late, the changes have been reverted.
+
+
+> How should the Sheriff proceed?`,
+    72,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100333, transition_100350]
+);
+
+/* No questions, only reverts? */
+const transition_100312 = new Transition(
+    100312,
+    'Revert',
+    `The Sheriff eyes the screen in front of them.
+Something isn't right.
+But what?
+
+They shake off the feeling.
+This is no time for doubts.
+
+One failure.
+Two suspects.
+Three ways to revert.
+
+
+> How should the Sheriff proceed?`,
+    72,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100330, transition_100331, transition_100335]
+);
+
+/* Error message in a bottle */
+const transition_100311 = new Transition(
+    100311,
+    'Look at failures',
+    `The Sheriff clicks the link to view the test failure details.
+
+A new page loads.
+It contains details on the failure.
+
+The Sheriff scrutinises the failure message:
+
+--------------------------------------------------------------
+1) allFrontEndTextMustHaveGaelicTranslations() (co.example.tests.analysis.GaelicTranslationTest)
+co.example.tests.analysis.MissingTranslationException: No translation found for:
+  - "Order Charcuterie"
+  - "Cancel Charcuterie order"
+  - "Track Charcuterie order"
+        at co.example.tests.integration.fridge.FridgeIntegrationTest.shouldBeAbleToWithdrawYoghurt(FridgeIntegrationTest.java:17)
+...
+--------------------------------------------------------------
+
+The plot thickens, like milk turning into yoghurt.
+
+
+> What should the Sheriff do now?`,
+    67,
+    NOTHING_SPECIAL_HAPPENS,
+    [transition_100312, transition_100335]
 );
 
 /* I'm late, I'm late! */
-const transition_100302 = new Transition(
-    100302,
+const transition_100310 = new Transition(
+    100310,
     'Investigate latest build',
     `The Sheriff pulls up the build details for the latest run.
 
@@ -98,26 +401,7 @@ Underneath, there is a link to the details of the test failures.
 > What should the Sheriff do now?`,
     74,
     NOTHING_SPECIAL_HAPPENS,
-    [transition_100303, transition_100304]
-);
-
-/* Out with the old... */
-const transition_100301 = new Transition(
-    100301,
-    'Investigate previous build',
-    `The Sheriff pulls up the build details for first failed run.
-
-The build details show that there were three changes in this run:
-
-- "Fix spelling of Charcuterie" <charlesb@example.co>
-
-Underneath, there is a link to the details of the test failures.
-
-
-> What should the Sheriff do now?`,
-    74,
-    NOTHING_SPECIAL_HAPPENS,
-    [transition_100303, transition_100304]
+    [transition_100312, transition_100311]
 );
 
 /* Your mission, if you chose to accept it... */
@@ -138,7 +422,7 @@ The build history shows the following runs:
 > What should the Sheriff do now?`,
     40,
     NOTHING_SPECIAL_HAPPENS,
-    [transition_100301, transition_100302]
+    [transition_100340, transition_100310]
 );
 
 // 1002xx: Integration

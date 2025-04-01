@@ -44,10 +44,7 @@ const transition_190001 = new Transition(
 
       [You] cool
       [You] let me know if you have any other problems
-[Colleague] Thanks for the help!
-
-
-> How do you respond?`,
+[Colleague] Thanks for the help!`,
     5,
     NOTHING_SPECIAL_HAPPENS,
     []
